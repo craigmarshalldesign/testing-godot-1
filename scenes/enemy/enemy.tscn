@@ -1,0 +1,173 @@
+[gd_scene load_steps=18 format=3 uid="uid://c6lkwm28be54j"]
+
+[ext_resource type="Script" path="res://scripts/enemy/enemy.gd" id="1_enemy_script"]
+[ext_resource type="PackedScene" uid="uid://crrmx8vcshxf3" path="res://meshes/hero_male.glb" id="2_g2els"]
+[ext_resource type="Script" path="res://scripts/player/footstepper.gd" id="4_dqkch"]
+[ext_resource type="Script" path="res://scripts/combat/floating_info.gd" id="6_float"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ring_enemy"]
+transparency = 1
+albedo_color = Color(1, 0, 0, 0.3)
+emission_enabled = true
+emission = Color(1, 0, 0, 1)
+emission_energy_multiplier = 2.0
+
+[sub_resource type="TorusMesh" id="TorusMesh_ring_enemy"]
+material = SubResource("StandardMaterial3D_ring_enemy")
+inner_radius = 0.98
+outer_radius = 1.0
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_iqvy6"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_float"]
+viewport_path = NodePath("FloatingInfo/SubViewport")
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_qhqgy"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_qhqgy"]
+animation = &"freehand_idle"
+
+[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_qhqgy"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_smehm"]
+animation = &"freehand_fall"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_tuyoq"]
+animation = &"pose_lean_left"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_fjrip"]
+animation = &"pose_lean_right"
+
+[sub_resource type="AnimationNodeTransition" id="AnimationNodeTransition_dqkch"]
+xfade_time = 0.25
+input_0/name = "idle"
+input_0/auto_advance = false
+input_0/break_loop_at_end = false
+input_0/reset = true
+input_1/name = "walk"
+input_1/auto_advance = false
+input_1/break_loop_at_end = false
+input_1/reset = true
+input_2/name = "run"
+input_2/auto_advance = false
+input_2/break_loop_at_end = false
+input_2/reset = true
+input_3/name = "fall"
+input_3/auto_advance = false
+input_3/break_loop_at_end = false
+input_3/reset = true
+input_4/name = "land_soft"
+input_4/auto_advance = false
+input_4/break_loop_at_end = false
+input_4/reset = true
+input_5/name = "land_roll"
+input_5/auto_advance = false
+input_5/break_loop_at_end = false
+input_5/reset = true
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_land_soft"]
+animation = &"landing_soft"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_land_roll"]
+animation = &"landing_roll"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_dqkch"]
+animation = &"freehand_run"
+
+[sub_resource type="AnimationNodeAdd3" id="AnimationNodeAdd3_qhqgy"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_qlg0r"]
+animation = &"freehand_walk"
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_qhqgy"]
+graph_offset = Vector2(-173.38846, 119.09007)
+nodes/output/position = Vector2(800, 160)
+nodes/Animation/node = SubResource("AnimationNodeAnimation_qhqgy")
+nodes/Animation/position = Vector2(-80, -40)
+nodes/movement/node = SubResource("AnimationNodeTransition_dqkch")
+nodes/movement/position = Vector2(398.69998, 194.8)
+nodes/walk/node = SubResource("AnimationNodeAnimation_qlg0r")
+nodes/walk/position = Vector2(-80, 120)
+nodes/run/node = SubResource("AnimationNodeAnimation_dqkch")
+nodes/run/position = Vector2(-80, 380)
+nodes/TimeScale/node = SubResource("AnimationNodeTimeScale_qhqgy")
+nodes/TimeScale/position = Vector2(80, 160)
+nodes/leanleft/node = SubResource("AnimationNodeAnimation_tuyoq")
+nodes/leanleft/position = Vector2(-360, 480)
+nodes/run_lean/node = SubResource("AnimationNodeAdd3_qhqgy")
+nodes/run_lean/position = Vector2(120, 380)
+nodes/leanright/node = SubResource("AnimationNodeAnimation_fjrip")
+nodes/leanright/position = Vector2(-360, 660)
+nodes/fall/node = SubResource("AnimationNodeAnimation_smehm")
+nodes/fall/position = Vector2(-100, 680)
+nodes/land_soft/node = SubResource("AnimationNodeAnimation_land_soft")
+nodes/land_soft/position = Vector2(80, 600)
+nodes/land_roll/node = SubResource("AnimationNodeAnimation_land_roll")
+nodes/land_roll/position = Vector2(80, 750)
+node_connections = [&"output", 0, &"movement", &"movement", 0, &"Animation", &"movement", 1, &"TimeScale", &"movement", 2, &"run_lean", &"movement", 3, &"fall", &"movement", 4, &"land_soft", &"movement", 5, &"land_roll", &"TimeScale", 0, &"walk", &"run_lean", 0, &"leanleft", &"run_lean", 1, &"run", &"run_lean", 2, &"leanright"]
+
+[node name="Enemy" type="CharacterBody3D"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+collision_layer = 4
+collision_mask = 5
+script = ExtResource("1_enemy_script")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_iqvy6")
+
+[node name="mesh" parent="." instance=ExtResource("2_g2els")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="AnimationPlayer" parent="mesh" index="1"]
+autoplay = "freehand_idle"
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+root_node = NodePath("../mesh")
+tree_root = SubResource("AnimationNodeBlendTree_qhqgy")
+anim_player = NodePath("../mesh/AnimationPlayer")
+parameters/movement/current_state = "idle"
+parameters/movement/transition_request = ""
+parameters/movement/current_index = 0
+parameters/TimeScale/scale = 1.0
+parameters/run_lean/add_amount = 0.0
+
+[node name="FloatingInfo" type="Node3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2, 0)
+script = ExtResource("6_float")
+
+[node name="SubViewport" type="SubViewport" parent="FloatingInfo"]
+transparent_bg = true
+size = Vector2i(200, 40)
+
+[node name="ProgressBar" type="ProgressBar" parent="FloatingInfo/SubViewport"]
+offset_right = 200.0
+offset_bottom = 40.0
+value = 50.0
+show_percentage = false
+
+[node name="HPBarSprite" type="Sprite3D" parent="FloatingInfo"]
+billboard = 1
+texture = SubResource("ViewportTexture_float")
+
+[node name="DamagePopPos" type="Marker3D" parent="FloatingInfo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="footsteps" type="AudioStreamPlayer3D" parent="."]
+bus = &"SoundFX"
+script = ExtResource("4_dqkch")
+
+[node name="MovementRadius" type="MeshInstance3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+visible = false
+mesh = SubResource("TorusMesh_ring_enemy")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+path_height_offset = 0.1
+target_desired_distance = 2.1
+path_max_distance = 3.01
+avoidance_enabled = true
+
+[editable path="mesh"]

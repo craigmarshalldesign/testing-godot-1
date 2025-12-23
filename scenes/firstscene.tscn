@@ -1,0 +1,166 @@
+[gd_scene load_steps=15 format=3 uid="uid://bv72o0782flqv"]
+
+[ext_resource type="PackedScene" uid="uid://be8qbmt0fe144" path="res://scenes/player/player.tscn" id="1_p4se6"]
+[ext_resource type="PackedScene" uid="uid://c7yj6qaogcw6o" path="res://meshes/test_level.glb" id="2_6iiou"]
+[ext_resource type="Script" uid="uid://3k86y8edoxcb" path="res://scripts/worldsound.gd" id="3_sc0r8"]
+[ext_resource type="AudioStream" uid="uid://c56f4penfyhwk" path="res://Audio/Footsteps/stone_step_sounds.tres" id="4_53krn"]
+[ext_resource type="AudioStream" uid="uid://3tmvmpxqxv2s" path="res://Audio/Footsteps/wood_step_sounds.tres" id="5_vdn1r"]
+[ext_resource type="AudioStream" uid="uid://bbxbk8kvnigh3" path="res://Audio/Music/temple.mp3" id="5_xdij4"]
+[ext_resource type="AudioStream" uid="uid://6m6yxtongwui" path="res://Audio/Footsteps/snow_step_sounds.tres" id="6_jpjlt"]
+[ext_resource type="AudioStream" uid="uid://0j3ppjjh8lgq" path="res://Audio/Footsteps/grass_step_sounds.tres" id="7_i7dt7"]
+[ext_resource type="AudioStream" uid="uid://bmkp3k7tv8ffu" path="res://Audio/Footsteps/dirt_step_sounds.tres" id="8_vrl7i"]
+[ext_resource type="PackedScene" uid="uid://c6lkwm28be54j" path="res://scenes/enemy/enemy.tscn" id="10_vdn1r"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_elfxq"]
+sky_top_color = Color(0.7090527, 0.14141142, 0.6979956, 1)
+sky_horizon_color = Color(0.90507406, 0.6016007, 0.59638715, 1)
+ground_bottom_color = Color(0.22484022, 0.36928633, 0.25127056, 1)
+ground_horizon_color = Color(0.76036525, 0.6545664, 0.76420856, 1)
+
+[sub_resource type="Sky" id="Sky_iqvy6"]
+sky_material = SubResource("ProceduralSkyMaterial_elfxq")
+
+[sub_resource type="Environment" id="Environment_1q3e1"]
+background_mode = 2
+sky = SubResource("Sky_iqvy6")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_elfxq"]
+albedo_color = Color(0.9220756, 0.8547617, 0.9124222, 1)
+
+[node name="Node3D" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_1q3e1")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 51.851868, 0, 0)
+shadow_enabled = true
+
+[node name="Player" parent="." instance=ExtResource("1_p4se6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.186908, 2.8541093, 3.3469667)
+attack = 85
+speed = 40
+
+[node name="platforms" type="Node3D" parent="."]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="platforms"]
+transform = Transform3D(1, 0, 0, 0, 0.9612617, -0.27563736, 0, 0.27563736, 0.9612617, 51.851868, 0, 0)
+use_collision = true
+size = Vector3(10, 1, 10)
+material = SubResource("StandardMaterial3D_elfxq")
+
+[node name="CSGBox3D8" type="CSGBox3D" parent="platforms"]
+transform = Transform3D(1, 0, 0, 0, 0.8151278, 0.57928115, 0, -0.57928115, 0.8151278, 51.851868, 0, -32.832954)
+use_collision = true
+size = Vector3(10, 1, 10)
+material = SubResource("StandardMaterial3D_elfxq")
+
+[node name="CSGBox3D9" type="CSGBox3D" parent="platforms"]
+transform = Transform3D(1, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, 51.851868, -3.410324, -44.613663)
+use_collision = true
+size = Vector3(10, 1, 10)
+material = SubResource("StandardMaterial3D_elfxq")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="platforms"]
+transform = Transform3D(1, 0, 0, 0, 0.9612617, -0.27563736, 0, 0.27563736, 0.9612617, 51.851868, 3.1562877, -10.869717)
+use_collision = true
+size = Vector3(10, 1, 10)
+material = SubResource("StandardMaterial3D_elfxq")
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="platforms"]
+transform = Transform3D(0.1, 0, 0, 0, 0.08480481, -0.052991927, 0, 0.052991927, 0.08480481, 51.851868, 6.0639915, -16.017544)
+use_collision = true
+size = Vector3(10, 1, 10)
+material = SubResource("StandardMaterial3D_elfxq")
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="platforms"]
+transform = Transform3D(0.1, 0, 0, 0, -0.1, 8.742278e-09, 0, -8.742278e-09, -0.1, 51.851868, 5.722873, -18.298206)
+use_collision = true
+size = Vector3(10, 1, 10)
+material = SubResource("StandardMaterial3D_elfxq")
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="platforms"]
+transform = Transform3D(0.1, 0, 0, 0, -0.1, 8.742278e-09, 0, -8.742278e-09, -0.1, 51.851868, 5.722873, -20.196745)
+use_collision = true
+size = Vector3(10, 1, 10)
+material = SubResource("StandardMaterial3D_elfxq")
+
+[node name="CSGBox3D6" type="CSGBox3D" parent="platforms"]
+transform = Transform3D(0.1, 0, 0, 0, -0.1, 8.742278e-09, 0, -8.742278e-09, -0.1, 51.851868, 5.722873, -22.535227)
+use_collision = true
+size = Vector3(10, 1, 10)
+material = SubResource("StandardMaterial3D_elfxq")
+
+[node name="CSGBox3D7" type="CSGBox3D" parent="platforms"]
+transform = Transform3D(0.1, 0, 0, 0, -0.1, 8.742278e-09, 0, -8.742278e-09, -0.1, 51.851868, 5.722873, -24.433765)
+use_collision = true
+size = Vector3(10, 1, 10)
+material = SubResource("StandardMaterial3D_elfxq")
+
+[node name="test_level" parent="." instance=ExtResource("2_6iiou")]
+
+[node name="StaticBody3D" parent="test_level/level" index="0"]
+script = ExtResource("3_sc0r8")
+footstep_sounds = ExtResource("4_53krn")
+
+[node name="StaticBody3D" parent="test_level/wood" index="0"]
+script = ExtResource("3_sc0r8")
+footstep_sounds = ExtResource("5_vdn1r")
+
+[node name="StaticBody3D" parent="test_level/snow" index="0"]
+script = ExtResource("3_sc0r8")
+footstep_sounds = ExtResource("6_jpjlt")
+
+[node name="CollisionShape3D" parent="test_level/snow/StaticBody3D" index="0"]
+script = ExtResource("3_sc0r8")
+
+[node name="StaticBody3D" parent="test_level/grass" index="0"]
+script = ExtResource("3_sc0r8")
+footstep_sounds = ExtResource("7_i7dt7")
+
+[node name="CollisionShape3D" parent="test_level/grass/StaticBody3D" index="0"]
+script = ExtResource("3_sc0r8")
+
+[node name="StaticBody3D" parent="test_level/dirt" index="0"]
+script = ExtResource("3_sc0r8")
+footstep_sounds = ExtResource("8_vrl7i")
+
+[node name="CollisionShape3D" parent="test_level/dirt/StaticBody3D" index="0"]
+script = ExtResource("3_sc0r8")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_xdij4")
+autoplay = true
+bus = &"Music"
+
+[node name="Enemy" parent="." instance=ExtResource("10_vdn1r")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 15.3990755, 1.925593, -20.112495)
+
+[node name="Enemy2" parent="." instance=ExtResource("10_vdn1r")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 12.783821, 3.910293, -13.997358)
+
+[node name="Enemy3" parent="." instance=ExtResource("10_vdn1r")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0.4928608, 10.017981, 24.103962)
+
+[node name="Enemy4" parent="." instance=ExtResource("10_vdn1r")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -2.9460955, 7.385518, 25.423412)
+base_attack = 12
+
+[node name="Enemy5" parent="." instance=ExtResource("10_vdn1r")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -5.3228035, 7.385518, 21.235645)
+
+[node name="Enemy6" parent="." instance=ExtResource("10_vdn1r")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -27.346743, 4.601197, -4.851244)
+
+[node name="Enemy7" parent="." instance=ExtResource("10_vdn1r")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -26.728058, 3.1249115, -2.0850258)
+
+[node name="Enemy8" parent="." instance=ExtResource("10_vdn1r")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -20.878866, 0.7202928, 3.3494854)
+
+[node name="Enemy9" parent="." instance=ExtResource("10_vdn1r")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -14.287027, 0.0001475, 8.0784025)
+
+[editable path="test_level"]
