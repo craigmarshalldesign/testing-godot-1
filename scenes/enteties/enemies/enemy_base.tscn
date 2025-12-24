@@ -1,0 +1,68 @@
+[gd_scene load_steps=10 format=3 uid="uid://busmjxlxvjh5e"]
+
+[ext_resource type="Script" path="res://scenes/enteties/enemies/enemy_base.gd" id="1_base_script"]
+[ext_resource type="Script" path="res://scenes/combat/scripts-combat/floating_info.gd" id="2_float_script"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_base"]
+radius = 0.5
+height = 2.0
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_float"]
+viewport_path = NodePath("FloatingInfo/SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ring"]
+transparency = 1
+albedo_color = Color(1, 0, 0, 0.3)
+emission_enabled = true
+emission = Color(1, 0, 0, 1)
+emission_energy_multiplier = 2.0
+
+[sub_resource type="TorusMesh" id="TorusMesh_ring"]
+material = SubResource("StandardMaterial3D_ring")
+inner_radius = 0.98
+outer_radius = 1.0
+
+[node name="EnemyBase" type="CharacterBody3D"]
+collision_layer = 4
+collision_mask = 5
+script = ExtResource("1_base_script")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_base")
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+
+[node name="FloatingInfo" type="Node3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2, 0)
+script = ExtResource("2_float_script")
+
+[node name="SubViewport" type="SubViewport" parent="FloatingInfo"]
+transparent_bg = true
+size = Vector2i(200, 40)
+
+[node name="ProgressBar" type="ProgressBar" parent="FloatingInfo/SubViewport"]
+offset_right = 200.0
+offset_bottom = 40.0
+value = 50.0
+show_percentage = false
+
+[node name="HPBarSprite" type="Sprite3D" parent="FloatingInfo"]
+billboard = 1
+texture = SubResource("ViewportTexture_float")
+
+[node name="DamagePopPos" type="Marker3D" parent="FloatingInfo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="MovementRadius" type="MeshInstance3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+visible = false
+mesh = SubResource("TorusMesh_ring")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+path_height_offset = 0.1
+target_desired_distance = 2.1
+path_max_distance = 3.01
+avoidance_enabled = true

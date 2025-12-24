@@ -106,15 +106,30 @@ func update(player: Player, delta: float) -> void:
 	if Input.is_action_just_pressed("attack"):
 		if current_target:
 			var dist: float = player.global_position.distance_to(current_target.global_position)
-			if dist <= 2.0:
+			var target_radius: float = _get_target_radius(current_target)
+			# Allow attack if we are within range + target's radius (so we touch their collision)
+			var effective_range: float = 2.0 + target_radius
+			
+			if dist <= effective_range:
 				perform_attack(player, current_target)
 			else:
-				print("Enemy is too far away to attack! Get within 2.0m (current: %.1fm)" % dist)
+				print("Enemy is too far! Dist: %.2f, Range: %.2f (Radius: %.2f)" % [dist, effective_range, target_radius])
 		else:
 			print("No enemy targeted to attack!")
 	
 	if Input.is_action_just_pressed("end_turn"):
 		end_player_turn(player)
+
+func _get_target_radius(target: Node) -> float:
+	var col: Node = target.get_node_or_null("CollisionShape3D")
+	if col and "shape" in col and col.shape:
+		if col.shape is CapsuleShape3D or col.shape is CylinderShape3D:
+			return col.shape.radius
+		elif col.shape is SphereShape3D:
+			return col.shape.radius
+		elif col.shape is BoxShape3D:
+			return max(col.shape.size.x, col.shape.size.z) * 0.5
+	return 0.5 # Default fallback
 
 func _set_target(enemy: Node, active: bool) -> void:
 	if is_instance_valid(enemy):
@@ -124,14 +139,25 @@ func _set_target(enemy: Node, active: bool) -> void:
 
 func _get_closest_enemy_in_range(player: Player, max_dist: float) -> Node:
 	var closest: Node = null
-	var min_dist: float = max_dist
+	# Increase scan range significantly to find large bosses that might be centered far away
+	# but have edges close by.
+	var min_dist: float = max_dist + 5.0
 	
 	for c in CombatManager.combatants:
 		if c.is_in_group("enemies") and is_instance_valid(c):
-			var d: float = player.global_position.distance_to(c.global_position)
-			if d < min_dist:
-				min_dist = d
-				closest = c
+			var dist_to_center: float = player.global_position.distance_to(c.global_position)
+			
+			# Check effective distance (center_dist - radius)
+			# We want to know if the SURFACE is within max_dist
+			var radius: float = _get_target_radius(c)
+			var dist_to_surface: float = dist_to_center - radius
+			
+			if dist_to_surface < max_dist:
+				# We sort by center distance for "closest" feel usually, 
+				# but let's stick to center dist for sorting, just filter by surface visibility
+				if dist_to_center < min_dist:
+					min_dist = dist_to_center
+					closest = c
 	return closest
 
 
@@ -147,11 +173,10 @@ func perform_attack(player: Player, target: Node) -> void:
 	player.anim_tree.set("parameters/movement/transition_request", "land_roll")
 	print("Player Attacks ", target.name)
 	
-	if target.has_method("setup_stats"): # Ensure stats are ready
-		var enemy_stats: CombatantStats = target.get("stats") as CombatantStats
-		if enemy_stats and enemy_stats.has_method("take_damage"):
-			enemy_stats.take_damage(player.stats.attack)
-			print("Dealt ", player.stats.attack, " damage!")
+	var enemy_stats: CombatantStats = target.get("stats") as CombatantStats
+	if enemy_stats:
+		enemy_stats.take_damage(player.stats.attack)
+		print("Dealt ", player.stats.attack, " damage!")
 	
 	# After animation (roughly), end turn
 	player.get_tree().create_timer(1.5).timeout.connect(func() -> void:

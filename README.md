@@ -22,7 +22,7 @@ The game follows a "hybrid" approach where the player explores a 3D environment 
 ## 🛠 Mechanics Detail
 
 ### Combat Flow
-1. **Trigger**: Proximity check in `enemy.gd` detects the player within 10m.
+1. **Trigger**: Proximity check in `enemy_combat.gd` detects the player within range (`detection_range`).
 2. **Setup**: `CombatManager` gathers nearby combatants and sorts them by `Speed` to determine turn order.
 3. **Turn Actions**: 
     - **Movement Radius**: During your turn, you can move freely within a radius (derived from your `Speed` stat).
@@ -45,29 +45,96 @@ The game follows a "hybrid" approach where the player explores a 3D environment 
 
 ---
 
+---
+
 ## 📂 Project Structure
 
-### Core Systems
-- `res://scripts/combat/combat_manager.gd`: **The Central Hub**. Manages turn order, participant tracking, and the Game Over sequence.
-- `res://scripts/combat/combat_ui.gd`: Manages the HUD and the animated Game Over screen.
-- `res://scripts/enemy/enemy.gd`: Advanced AI controller handling exploration, combat movement, and logic aborts if combat ends mid-action.
-- `res://scripts/player/player.gd`: Handles player states, inputs, and death-specific visual/physics transitions.
+### Enemy System Architecture (Gold Standard)
+
+The enemy system uses a **modular inheritance chain** for maximum reusability, with scripts nested directly inside their respective scene folders.
+
+```
+scenes/enteties/enemies/
+├── enemy_base.tscn
+├── enemy_base.gd
+├── scripts-enemy_base/        # Shared base logic
+│   ├── enemy_movement.gd
+│   └── enemy_combat.gd
+├── normal/
+│   └── SkeletonWarrior/
+│       ├── skeleton_warrior.tscn
+│       └── scripts-skeletonwarrior/
+└── boss/
+    └── boss1/
+        ├── boss1.tscn
+        └── scripts-boss1/
+```
+
+### Combat System (Refactor Planned)
+We are moving combat scripts from `scripts/combat/` to a centralized scene-based folder:
+- **Location**: `scenes/combat/scripts-combat/`
+- **Files**: `combat_manager.gd`, `combat_ui.gd`, `combat_stats.gd`, `floating_info.gd`
+
+---
+
+## 🚀 Next Major Refactor: Player Party System
+
+### Goal
+Refactor the player system to mirror the enemy architecture, enabling a 4-character party with character switching. We will use a standalone camera and a shared entity base.
+
+### Proposed Architecture
+
+#### 1. Camera System
+- **Folder**: `scenes/camera/`
+- **Files**: 
+    - `party_camera.tscn`: Standalone SpringArm3D/Camera3D.
+    - `scripts-camera/party_camera.gd`: Logic to follow the "active" entity.
+
+#### 2. Player Entity System
+- **Folder**: `scenes/enteties/player/`
+- **Files**:
+    - `player_base.tscn`: Base CharacterBody3D and components.
+    - `player_base.gd`: Facade script.
+    - `scripts-player_base/`:
+        - `player_movement.gd`: Physics and input handling.
+        - `player_combat.gd`: Player-specific combat turn logic.
+    - `characters/`: Specific class definitions (Warrior, Mage, etc.) following the same sub-folder pattern as enemies.
+
+#### 3. Party Manager
+- **Location**: `scenes/enteties/player/party_manager.gd`
+- **Role**: Tracks the group, handles character swapping, and communicates turn order to the CombatManager.
+
+### Implementation Steps
+
+#### Phase 1: Infrastructure & Camera
+1. Create `scenes/camera/` and implement the `PartyCamera`.
+2. Move Combat scripts to `scenes/combat/scripts-combat/`.
+3. Test camera following the *existing* player.
+
+#### Phase 2: Player Base & First Character
+4. Create the `player_base` structure under `scenes/enteties/player/`.
+5. Implement the first character (e.g., Warrior) inheriting from `player_base`.
+6. Implement the `PartyManager` to spawn/set the active character.
+
+#### Phase 3: Transition
+7. Create a new test scene using the new system.
+8. Validate turn-based flow with the new character system.
+9. Final migration of existing maps to the new party system.
 
 ---
 
 ## 📝 Current Development State
 
-### Implemented Improvements
-- **Game Over Refinement**: High-polish UI with back-easing scale animations and pulsing prompts.
-- **Camera Decoupling**: Fixed the issue where the camera would spin 90 degrees into the floor when the player died.
-- **AI Robustness**: Added checks after every `await` in enemy combat coroutines to ensure they don't continue attacking or dealing damage after combat has ended.
-- **Visual Darkening**: Implemented a universal material override that darkens any mesh (regardless of original material type) upon death.
+### Recently Completed
+- **Enemy Inheritance Chain**: Modular scripts (enemy_movement → enemy_combat → enemy_base)
+- **SkeletonWarrior**: New enemy type using the refactored system
+- **Facing Direction Fix**: Enemies face movement direction during walking AND jumping
+- **Player Attack Fix**: Player can now deal damage to enemies correctly
 
-### Suggested Next Steps
-1. **Special Abilities**: Expand the combat menu to support skills, magical attacks, or bracing for defense.
-2. **Level Transitions**: Implement a system to move between different dungeon floors/rooms.
-3. **Experience & Leveling**: Implement an XP system awarded upon victory.
-4. **Audio Integration**: Add impact sounds, death groans, and dramatic game over music.
+### Suggested Immediate Tasks
+1. **Move Combat Scripts**: Relocate to `scenes/combat/scripts-combat/` to match the new standard.
+2. **Implement PartyCamera**: Separate the camera from the player node.
+3. **SkeletonWarrior Polish**: Add varied colors/sizes as needed.
 
 ---
 

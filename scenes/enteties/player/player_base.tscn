@@ -1,0 +1,69 @@
+[gd_scene load_steps=9 format=3 uid="uid://cy803323qkj7e"]
+
+[ext_resource type="Script" uid="uid://s50dueqk2btq" path="res://scenes/enteties/player/player_base.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://b1q4n8wl1pqly" path="res://scenes/combat/scripts-combat/floating_info.gd" id="2_float"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_player"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_kuwii"]
+animation = &"2H_Melee_Idle"
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_bbjrq"]
+nodes/idle/node = SubResource("AnimationNodeAnimation_kuwii")
+nodes/idle/position = Vector2(120, 60)
+node_connections = [&"output", 0, &"idle"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_hp"]
+viewport_path = NodePath("FloatingInfo/SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ring"]
+transparency = 1
+albedo_color = Color(0, 1, 1, 0.3)
+emission_enabled = true
+emission = Color(0, 1, 1, 1)
+emission_energy_multiplier = 2.0
+
+[sub_resource type="TorusMesh" id="TorusMesh_ring"]
+material = SubResource("StandardMaterial3D_ring")
+inner_radius = 0.98
+
+[node name="PlayerBase" type="CharacterBody3D"]
+collision_mask = 5
+script = ExtResource("1_script")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_player")
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = SubResource("AnimationNodeBlendTree_bbjrq")
+anim_player = NodePath("../skin/AnimationPlayer")
+
+[node name="FloatingInfo" type="Node3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2, 0)
+script = ExtResource("2_float")
+
+[node name="SubViewport" type="SubViewport" parent="FloatingInfo"]
+transparent_bg = true
+size = Vector2i(200, 40)
+
+[node name="ProgressBar" type="ProgressBar" parent="FloatingInfo/SubViewport"]
+offset_right = 200.0
+offset_bottom = 40.0
+value = 50.0
+show_percentage = false
+
+[node name="HPBarSprite" type="Sprite3D" parent="FloatingInfo"]
+billboard = 1
+texture = SubResource("ViewportTexture_hp")
+
+[node name="DamagePopPos" type="Marker3D" parent="FloatingInfo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="MovementRadius" type="MeshInstance3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+visible = false
+mesh = SubResource("TorusMesh_ring")
+

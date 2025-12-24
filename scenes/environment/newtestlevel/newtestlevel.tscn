@@ -1,0 +1,55 @@
+[gd_scene load_steps=12 format=3 uid="uid://cp35chnojhe8j"]
+
+[ext_resource type="PackedScene" uid="uid://c7yj6qaogcw6o" path="res://meshes/test_level.glb" id="1_jr6rp"]
+[ext_resource type="PackedScene" uid="uid://byix360l3t7x1" path="res://scenes/enteties/enemies/normal/SkeletonWarrior/skeleton_warrior.tscn" id="2_kxdft"]
+[ext_resource type="PackedScene" uid="uid://d3ra8101h4igo" path="res://scenes/enteties/enemies/boss/boss1/boss1.tscn" id="3_x3idv"]
+[ext_resource type="PackedScene" path="res://scenes/enteties/player/party_manager.tscn" id="4_party_scene"]
+[ext_resource type="PackedScene" uid="uid://blw5qrgo7mfk5" path="res://scenes/enteties/player/characters/character-a/character_a.tscn" id="5_char_a"]
+[ext_resource type="PackedScene" path="res://scenes/enteties/player/characters/character-b/character_b.tscn" id="6_char_b"]
+[ext_resource type="PackedScene" uid="uid://dpvjgk5ujb4v0" path="res://scenes/combat/CombatUI.tscn" id="7_combat_ui"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sky"]
+sky_top_color = Color(0.7090527, 0.14141142, 0.6979956, 1)
+sky_horizon_color = Color(0.90507406, 0.6016007, 0.59638715, 1)
+ground_bottom_color = Color(0.22484022, 0.36928633, 0.25127056, 1)
+ground_horizon_color = Color(0.76036525, 0.6545664, 0.76420856, 1)
+
+[sub_resource type="Sky" id="Sky_env"]
+sky_material = SubResource("ProceduralSkyMaterial_sky")
+
+[sub_resource type="Environment" id="Environment_env"]
+background_mode = 2
+sky = SubResource("Sky_env")
+tonemap_mode = 2
+glow_enabled = true
+
+[node name="NewTestLevel" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_env")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, -0.75, 0.433013, 0, 10, 0)
+shadow_enabled = true
+
+[node name="test_level" parent="." instance=ExtResource("1_jr6rp")]
+
+[node name="PartyManager" parent="." instance=ExtResource("4_party_scene")]
+
+[node name="CharacterA" parent="PartyManager" instance=ExtResource("5_char_a")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="CharacterB" parent="PartyManager" instance=ExtResource("6_char_b")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="SkeletonWarrior" parent="." instance=ExtResource("2_kxdft")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.3584476, 0, -15.492015)
+
+[node name="SkeletonWarrior2" parent="." instance=ExtResource("2_kxdft")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.3338094, 0, -18.846935)
+
+[node name="Boss1" parent="." instance=ExtResource("3_x3idv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.086108, 9.389656, -28.636646)
+
+[node name="CombatUI" parent="." instance=ExtResource("7_combat_ui")]
+

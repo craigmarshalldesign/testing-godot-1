@@ -1,0 +1,146 @@
+[gd_scene load_steps=12 format=3 uid="uid://d3ra8101h4igo"]
+
+[ext_resource type="PackedScene" uid="uid://busmjxlxvjh5e" path="res://scenes/enteties/enemies/enemy_base.tscn" id="1_base"]
+[ext_resource type="Script" uid="uid://8py4blhahtoa" path="res://scenes/enteties/enemies/boss/boss1/scripts-boss1/boss1.gd" id="2_boss1_script"]
+[ext_resource type="PackedScene" uid="uid://cnog3kv0qfhx6" path="res://scenes/enteties/enemies/boss/boss1/Nagonford_Animated.glb" id="3_mesh"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_boss"]
+radius = 1.5
+height = 6.0
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_attack"]
+animation = &"2H_Melee_Attack_Chop"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_fall"]
+animation = &"Jump_Idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_idle"]
+animation = &"2H_Melee_Idle"
+
+[sub_resource type="AnimationNodeTransition" id="AnimationNodeTransition_movement"]
+xfade_time = 0.25
+input_0/name = "idle"
+input_0/auto_advance = false
+input_0/break_loop_at_end = false
+input_0/reset = true
+input_1/name = "walk"
+input_1/auto_advance = false
+input_1/break_loop_at_end = false
+input_1/reset = true
+input_2/name = "attack"
+input_2/auto_advance = false
+input_2/break_loop_at_end = false
+input_2/reset = true
+input_3/name = "fall"
+input_3/auto_advance = false
+input_3/break_loop_at_end = false
+input_3/reset = true
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_walk"]
+animation = &"Walking_A"
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_boss"]
+graph_offset = Vector2(-352.172, 76.698)
+nodes/output/position = Vector2(340, 160)
+nodes/idle/node = SubResource("AnimationNodeAnimation_idle")
+nodes/idle/position = Vector2(-200, 60)
+nodes/walk/node = SubResource("AnimationNodeAnimation_walk")
+nodes/walk/position = Vector2(-200, 180)
+nodes/attack/node = SubResource("AnimationNodeAnimation_attack")
+nodes/attack/position = Vector2(-200, 300)
+nodes/fall/node = SubResource("AnimationNodeAnimation_fall")
+nodes/fall/position = Vector2(-200, 420)
+nodes/movement/node = SubResource("AnimationNodeTransition_movement")
+nodes/movement/position = Vector2(100, 160)
+node_connections = [&"output", 0, &"movement", &"movement", 0, &"idle", &"movement", 1, &"walk", &"movement", 2, &"attack", &"movement", 3, &"fall"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_c5fe1"]
+viewport_path = NodePath("FloatingInfo/SubViewport")
+
+[node name="Boss1" instance=ExtResource("1_base")]
+script = ExtResource("2_boss1_script")
+base_health = 300
+base_attack = 80
+base_defense = 20
+base_speed = 6
+attack_range = 4.0
+attack_damage_delay = 0.6
+
+[node name="CollisionShape3D" parent="." index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.005, 3, 0)
+shape = SubResource("CapsuleShape3D_boss")
+
+[node name="AnimationTree" parent="." index="1"]
+root_node = NodePath("../skin")
+tree_root = SubResource("AnimationNodeBlendTree_boss")
+anim_player = NodePath("../skin/AnimationPlayer")
+parameters/movement/current_state = "idle"
+parameters/movement/transition_request = ""
+parameters/movement/current_index = 0
+
+[node name="skin" parent="." index="2" instance=ExtResource("3_mesh")]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, -1.1473365, 1.41807, 0)
+
+[node name="Skeleton3D" parent="skin/Rig" index="0"]
+bones/1/position = Vector3(0.008410764, 0.37396663, 1.2184853e-10)
+bones/2/rotation = Quaternion(-0.060599465, -0.13028215, -0.007978079, 0.9895912)
+bones/3/rotation = Quaternion(0.007829848, 0.00025599217, -0.0020823246, 0.99996716)
+bones/4/position = Vector3(0.24804358, 0.110857, 0.0825816)
+bones/4/rotation = Quaternion(-0.5809745, -0.24797137, -0.72964346, 0.2619147)
+bones/5/rotation = Quaternion(2.720865e-08, -7.725253e-08, -0.5662517, 0.82423246)
+bones/7/rotation = Quaternion(-0.18339962, -0.6799699, -0.052630417, 0.70798004)
+bones/8/position = Vector3(5.1384585e-10, 0.09612511, -0.057500035)
+bones/8/rotation = Quaternion(-6.2219203e-09, 4.3147903e-09, -0.7071068, 0.7071067)
+bones/9/position = Vector3(-0.17668214, 0.11170339, 0.0891542)
+bones/9/rotation = Quaternion(-0.2515958, 0.35340196, 0.8376162, 0.33197266)
+bones/10/rotation = Quaternion(-2.7567928e-10, 4.3102656e-08, 0.56418616, 0.82564765)
+bones/12/rotation = Quaternion(-0.2442073, 0.21553338, -0.101696454, 0.93998194)
+bones/13/position = Vector3(-5.138494e-10, 0.096125126, -0.057500005)
+bones/13/rotation = Quaternion(0.15571052, -0.18945536, 0.6702893, 0.7004093)
+bones/14/rotation = Quaternion(0.08038051, 0.13046464, 0.007954422, 0.9881573)
+bones/15/position = Vector3(0.17094505, 0.11358726, 1.3923275e-08)
+bones/15/rotation = Quaternion(0.99279153, 0.073883004, 0.039835643, 0.08555382)
+bones/16/rotation = Quaternion(0.37859267, 6.537255e-08, -2.6804045e-07, 0.9255634)
+bones/17/rotation = Quaternion(-0.60700256, -0.21225396, 0.05891896, 0.7635606)
+bones/18/rotation = Quaternion(1.879783e-05, 0.92013425, -0.39160308, -4.271835e-06)
+bones/19/rotation = Quaternion(0.98981845, -0.039618418, -0.012095328, 0.13617505)
+bones/20/rotation = Quaternion(0.41475248, -6.4030154e-08, 2.8661137e-07, 0.90993434)
+bones/21/rotation = Quaternion(-0.6167526, 0.1114956, -0.030559115, 0.77862126)
+bones/22/rotation = Quaternion(-1.0960962e-05, 0.92013997, -0.39158973, 2.7862382e-06)
+bones/23/rotation = Quaternion(0.7071068, -2.2930234e-07, -4.605517e-08, 0.7071068)
+bones/24/rotation = Quaternion(-0.7071068, -7.052851e-08, -7.0528486e-08, 0.7071068)
+bones/25/position = Vector3(0.030839492, 0.38245776, -2.8668688e-15)
+bones/25/rotation = Quaternion(1.0013814e-08, 1.91522e-09, 0.9846389, -0.1746031)
+bones/26/position = Vector3(3.752948e-09, 0.21343613, -1.0342986e-08)
+bones/26/rotation = Quaternion(-9.998893e-08, 0.39108434, 0.92035484, -3.3950656e-08)
+bones/27/position = Vector3(2.3491044e-08, 0.16565004, -5.091363e-09)
+bones/28/rotation = Quaternion(1, 2.3026052e-09, 1.9333544e-07, -4.398443e-16)
+bones/30/rotation = Quaternion(0.7071068, -3.8238497e-08, 1.4500867e-07, 0.7071068)
+bones/31/rotation = Quaternion(-0.7071068, -7.0528515e-08, -7.05285e-08, 0.7071068)
+bones/32/rotation = Quaternion(-5.8358944e-09, 6.4383693e-10, 0.9948094, 0.10175614)
+bones/33/position = Vector3(-1.114822e-08, 0.21343614, -2.5094192e-15)
+bones/33/rotation = Quaternion(-1.05795515e-07, 0.39108434, 0.92035484, -2.5864264e-08)
+bones/34/position = Vector3(-6.3112755e-09, 0.16565004, 2.7069498e-09)
+bones/35/rotation = Quaternion(1, 3.7652574e-09, 1.9487908e-07, 7.4505815e-09)
+bones/37/position = Vector3(0.8398419, 0.7198659, -0.44755834)
+bones/37/rotation = Quaternion(-0.7071068, -7.279511e-08, -7.279509e-08, 0.7071068)
+bones/38/position = Vector3(0.34066567, 0.8134195, 0.40841186)
+bones/38/rotation = Quaternion(0.61637837, 0.0667859, 0.4569308, 0.6378336)
+bones/39/position = Vector3(-0.87740976, 1.0355499, -0.44755882)
+bones/39/rotation = Quaternion(-0.7071068, -7.279511e-08, -7.279509e-08, 0.7071068)
+bones/40/position = Vector3(-0.34153864, 0.8236227, 0.27885097)
+bones/40/rotation = Quaternion(-0.32171577, 0.22461735, 0.9068478, -0.15386145)
+
+[node name="handslot_r" parent="skin/Rig/Skeleton3D" index="0"]
+transform = Transform3D(-0.2131457, 0.77464956, -0.59538734, -0.6158289, 0.36657393, 0.69740736, 0.7584996, 0.5153062, 0.39891845, -0.286234, 0.68864614, 0.35237882)
+
+[node name="chest" parent="skin/Rig/Skeleton3D" index="1"]
+transform = Transform3D(0.9659258, 0.03158012, -0.25688517, -0.00419588, 0.99430823, 0.10645796, 0.258785, -0.10175264, 0.9605606, 0.020252932, 0.93813026, -0.04419555)
+
+[node name="FloatingInfo" parent="." index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.5702715, 0)
+
+[node name="HPBarSprite" parent="FloatingInfo" index="1"]
+texture = SubResource("ViewportTexture_c5fe1")
+
+[editable path="skin"]

@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://dw8xqr2hy6p3a"]
+
+[ext_resource type="Script" uid="uid://dmr8jqw0k7lc4" path="res://scenes/enteties/player/party_manager.gd" id="1_script"]
+[ext_resource type="PackedScene" uid="uid://c6j2y1p6r8u2a" path="res://scenes/camera/party_camera.tscn" id="2_camera"]
+
+[node name="PartyManager" type="Node3D"]
+script = ExtResource("1_script")
+
+[node name="PartyCamera" parent="." instance=ExtResource("2_camera")]

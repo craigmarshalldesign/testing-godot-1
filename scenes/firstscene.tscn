@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://bv72o0782flqv"]
+[gd_scene load_steps=16 format=3 uid="uid://bv72o0782flqv"]
 
 [ext_resource type="PackedScene" uid="uid://be8qbmt0fe144" path="res://scenes/player/player.tscn" id="1_p4se6"]
 [ext_resource type="PackedScene" uid="uid://c7yj6qaogcw6o" path="res://meshes/test_level.glb" id="2_6iiou"]
@@ -9,7 +9,8 @@
 [ext_resource type="AudioStream" uid="uid://6m6yxtongwui" path="res://Audio/Footsteps/snow_step_sounds.tres" id="6_jpjlt"]
 [ext_resource type="AudioStream" uid="uid://0j3ppjjh8lgq" path="res://Audio/Footsteps/grass_step_sounds.tres" id="7_i7dt7"]
 [ext_resource type="AudioStream" uid="uid://bmkp3k7tv8ffu" path="res://Audio/Footsteps/dirt_step_sounds.tres" id="8_vrl7i"]
-[ext_resource type="PackedScene" uid="uid://c6lkwm28be54j" path="res://scenes/enemy/enemy.tscn" id="10_vdn1r"]
+[ext_resource type="PackedScene" uid="uid://byix360l3t7x1" path="res://scenes/enteties/enemies/normal/SkeletonWarrior/skeleton_warrior.tscn" id="11_iyhl2"]
+[ext_resource type="PackedScene" uid="uid://d3ra8101h4igo" path="res://scenes/enteties/enemies/boss/boss1/boss1.tscn" id="12_s8iog"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_elfxq"]
 sky_top_color = Color(0.7090527, 0.14141142, 0.6979956, 1)
@@ -135,32 +136,28 @@ stream = ExtResource("5_xdij4")
 autoplay = true
 bus = &"Music"
 
-[node name="Enemy" parent="." instance=ExtResource("10_vdn1r")]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 15.3990755, 1.925593, -20.112495)
+[node name="Boss1" parent="." instance=ExtResource("12_s8iog")]
+transform = Transform3D(-0.05948063, 0, -0.99822944, 0, 1, 0, 0.99822944, 0, -0.05948063, 29.162075, 9.389656, 4.414237)
+collision_layer = 1
+collision_mask = 1
+base_speed = 30
 
-[node name="Enemy2" parent="." instance=ExtResource("10_vdn1r")]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 12.783821, 3.910293, -13.997358)
+[node name="SkeletonWarrior" parent="." instance=ExtResource("11_iyhl2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.489593, 3.9101722, -14.272523)
 
-[node name="Enemy3" parent="." instance=ExtResource("10_vdn1r")]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0.4928608, 10.017981, 24.103962)
+[node name="SkeletonWarrior2" parent="." instance=ExtResource("11_iyhl2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.0579605, 1.9254721, -20.244326)
 
-[node name="Enemy4" parent="." instance=ExtResource("10_vdn1r")]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -2.9460955, 7.385518, 25.423412)
-base_attack = 12
+[node name="SkeletonWarrior3" parent="." instance=ExtResource("11_iyhl2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -29.310673, 5.7502213, -4.971983)
 
-[node name="Enemy5" parent="." instance=ExtResource("10_vdn1r")]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -5.3228035, 7.385518, 21.235645)
+[node name="SkeletonWarrior4" parent="." instance=ExtResource("11_iyhl2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -27.905848, 0.7160707, 9.943859)
 
-[node name="Enemy6" parent="." instance=ExtResource("10_vdn1r")]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -27.346743, 4.601197, -4.851244)
+[node name="SkeletonWarrior5" parent="." instance=ExtResource("11_iyhl2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.08840561, 10.01786, 23.778732)
 
-[node name="Enemy7" parent="." instance=ExtResource("10_vdn1r")]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -26.728058, 3.1249115, -2.0850258)
-
-[node name="Enemy8" parent="." instance=ExtResource("10_vdn1r")]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -20.878866, 0.7202928, 3.3494854)
-
-[node name="Enemy9" parent="." instance=ExtResource("10_vdn1r")]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -14.287027, 0.0001475, 8.0784025)
+[node name="SkeletonWarrior6" parent="." instance=ExtResource("11_iyhl2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.8365335, 7.385399, 20.857702)
 
 [editable path="test_level"]
