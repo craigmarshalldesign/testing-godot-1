@@ -57,6 +57,15 @@ func start_combat(player: Node, initial_enemy: Node) -> void:
 	
 	emit_signal("combat_started")
 	print("Combat started with ", combatants.size(), " combatants!")
+	
+	print("--- TURN ORDER ---")
+	for i in range(combatants.size()):
+		var c: Node = combatants[i]
+		var spd: int = 0
+		if c.get("stats"): spd = c.stats.speed
+		print(i, ": ", c.name, " (Spd: ", spd, ")")
+	print("------------------")
+	
 	_start_turn()
 
 func _find_party_manager(player: Node) -> PartyManager:
@@ -87,6 +96,10 @@ func _start_turn() -> void:
 		current_combatant.start_turn()
 
 func _update_camera_for_turn(combatant: Node) -> void:
+	# Only update camera if it's a player character's turn
+	if not combatant.is_in_group("player"):
+		return
+		
 	# Find party manager from any party member
 	var party_manager: PartyManager = _find_party_manager(combatant)
 	if party_manager:
@@ -119,7 +132,10 @@ func end_turn() -> void:
 	if not is_combat_active: return
 	if combatants.is_empty(): return
 	turn_index = (turn_index + 1) % combatants.size()
-	_start_turn()
+	# Defer starting the next turn to next frame.
+	# This prevents the current InputEvent from triggering actions for the NEXT character
+	# if the control switch happens synchronously.
+	call_deferred("_start_turn")
 
 func on_combatant_death(combatant: Node) -> void:
 	var idx: int = combatants.find(combatant)
@@ -170,7 +186,7 @@ func _check_victory_condition_met() -> bool:
 	
 	if enemies_left == 0:
 		print("Victory! All enemies defeated.")
-		end_combat()
+		end_combat(true) # Victory = true
 		return true
 	elif players_left == 0:
 		print("Game Over! All players defeated.")
@@ -189,9 +205,9 @@ func _trigger_game_over_sequence() -> void:
 	emit_signal("game_over")
 	# Small delay to ensure UI processes the signal before we clear combatants
 	await get_tree().create_timer(0.1).timeout
-	end_combat()
+	end_combat(false) # Victory = false
 
-func end_combat() -> void:
+func end_combat(victory: bool = false) -> void:
 	is_combat_active = false
 	
 	# Find and notify party manager
@@ -199,7 +215,7 @@ func end_combat() -> void:
 		if c.is_in_group("player"):
 			var pm: PartyManager = _find_party_manager(c)
 			if pm:
-				pm.exit_combat()
+				pm.exit_combat(victory)
 				break
 	
 	for c: Node in combatants:

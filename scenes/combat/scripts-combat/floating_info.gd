@@ -101,6 +101,8 @@ func _process(_delta: float) -> void:
 		hp_bar.value = stats_ref.current_health
 
 func _on_damage_taken(amount: int) -> void:
+	if not is_inside_tree(): return
+	
 	var label: Label = Label.new()
 	label.text = str(amount)
 	label.modulate = Color.YELLOW # Changed to yellow for better visibility against red damage

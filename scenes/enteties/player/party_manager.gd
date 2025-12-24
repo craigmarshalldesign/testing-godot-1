@@ -123,8 +123,14 @@ func enter_combat() -> void:
 	
 	# Position all characters near the active one in a circle
 	var center: Vector3 = active_character.global_position
+	# Orient formation based on active character's rotation
+	var base_rotation: float = active_character.rotation.y
+	
+	# Dynamic radius: Increase for larger parties to prevent overlap
+	var base_radius: float = 2.0
+	var radius: float = base_radius + max(0, characters.size() - 4) * 0.5
+	
 	var angle_step: float = TAU / max(characters.size(), 1)
-	var radius: float = 1.5
 	
 	for i in range(characters.size()):
 		var character: Node3D = characters[i]
@@ -134,9 +140,15 @@ func enter_combat() -> void:
 		
 		# Position in a circle around the combat center
 		if i != active_index:
-			var angle: float = angle_step * i
-			var offset: Vector3 = Vector3(cos(angle), 0, sin(angle)) * radius
+			# Distribute, but start from "behind" (-Z is forward, so +Z is back) or just distribute evenly
+			var angle: float = base_rotation + (angle_step * i)
+			# Create circle offset
+			var offset: Vector3 = Vector3(sin(angle), 0, cos(angle)) * radius
 			character.global_position = center + offset
+			
+			# Face outwards or same direction?
+			# Face same direction as leader initially for better orientation
+			character.rotation.y = base_rotation
 		
 		# Tell character to enter combat
 		if character.has_method("enter_combat"):
@@ -149,7 +161,7 @@ func enter_combat() -> void:
 	
 	print("Party entered combat. All ", characters.size(), " members now visible.")
 
-func exit_combat() -> void:
+func exit_combat(restore_party: bool = false) -> void:
 	if not is_in_combat:
 		return
 	
@@ -159,6 +171,11 @@ func exit_combat() -> void:
 	# Hide all but active character
 	for i in range(characters.size()):
 		var character: Node3D = characters[i]
+		
+		# Optional: Revive and Heal if requested (Victory)
+		if restore_party:
+			if character.has_method("revive"):
+				character.revive()
 		
 		# Tell character to exit combat first
 		if character.has_method("exit_combat"):

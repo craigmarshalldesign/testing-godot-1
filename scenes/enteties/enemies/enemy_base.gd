@@ -29,7 +29,4 @@ func _get_mesh_node() -> Node3D:
 # =============================================================================
 
 func _ready() -> void:
-	if Engine.is_editor_hint():
-		return
-	
 	super._ready() # Calls EnemyCombat._ready() -> EnemyMovement._ready()

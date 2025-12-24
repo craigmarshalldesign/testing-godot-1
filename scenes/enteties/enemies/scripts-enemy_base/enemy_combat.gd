@@ -3,14 +3,19 @@ extends "res://scenes/enteties/enemies/scripts-enemy_base/enemy_movement.gd"
 
 # --- Exposed Stats (Edit in Inspector) ---
 @export_group("Base Enemy Stats")
-@export var base_health: int = 85
-@export var base_attack: int = 50
-@export var base_defense: int = 8
-@export var base_speed: int = 10
+@export var base_health: int
+@export var base_attack: int
+@export var base_defense: int
+@export var base_speed: int
+
+func _init() -> void:
+	# Defaults should be set by child classes (e.g. SkeletonWarrior)
+	pass
 
 @export_group("Combat Settings")
 @export var attack_range: float = 2.1 ## How close to player to trigger attack
 @export var attack_damage_delay: float = 0.4 ## Seconds into attack animation before damage is dealt
+@export var hit_radius: float = 0.5 ## The physical size of this unit for incoming attacks
 
 @export_group("Detection Settings")
 @export var detection_range: float = 10.0 ## Distance to spot player and START combat
@@ -36,6 +41,9 @@ var is_acting: bool = false
 # VIRTUAL FUNCTIONS - Override in child scripts
 # =============================================================================
 
+func _configure_stats() -> void:
+	pass
+
 func _get_attack_animation() -> String:
 	return "attack"
 
@@ -51,6 +59,7 @@ func _get_mesh_node() -> Node3D:
 
 func _ready() -> void:
 	if Engine.is_editor_hint():
+		_configure_stats()
 		return
 	
 	super._ready() # Calls EnemyMovement._ready()
@@ -468,6 +477,9 @@ func die() -> void:
 	velocity = Vector3.ZERO
 	set_physics_process(false)
 	
+	if anim_tree:
+		anim_tree.active = false
+	
 	# Fall over animation
 	var tween: Tween = create_tween()
 	tween.tween_property(self, "rotation_degrees:x", 90, 0.5).set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
@@ -494,16 +506,19 @@ func die() -> void:
 	var cm: Node = get_node_or_null("/root/CombatManager")
 	if cm and cm.has_method("on_combatant_death"):
 		cm.on_combatant_death(self)
+	
+	# Despawn corpse after 30 seconds
+	await get_tree().create_timer(30.0).timeout
+	queue_free()
 
 func _apply_dark_material(node: Node) -> void:
 	if node is MeshInstance3D:
-		for i in range(node.get_surface_override_material_count()):
-			var mat: Material = node.get_surface_override_material(i)
-			if mat is StandardMaterial3D:
-				var dark_mat: StandardMaterial3D = mat.duplicate()
-				dark_mat.albedo_color = dark_mat.albedo_color.darkened(0.7)
-				dark_mat.emission_enabled = false
-				node.set_surface_override_material(i, dark_mat)
+		for i in range(node.mesh.get_surface_count()):
+			var dark_mat: StandardMaterial3D = StandardMaterial3D.new()
+			dark_mat.albedo_color = Color(0.15, 0.15, 0.15)
+			# Copy emission if needed or just disable it
+			dark_mat.emission_enabled = false
+			node.set_surface_override_material(i, dark_mat)
 	
 	for child in node.get_children():
 		_apply_dark_material(child)

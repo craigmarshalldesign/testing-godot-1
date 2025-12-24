@@ -7,9 +7,16 @@ class_name SkeletonWarrior
 @onready var mesh: Node3D = $skin
 
 func _init() -> void:
+	_configure_stats()
+
+func _setup_stats() -> void:
+	_configure_stats()
+	super._setup_stats()
+
+func _configure_stats() -> void:
 	# Same stats as AntiHero
 	base_health = 85
-	base_attack = 50
+	base_attack = 25
 	base_defense = 8
 	base_speed = 10
 

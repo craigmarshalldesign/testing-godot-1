@@ -5,10 +5,17 @@ extends PlayerBase
 ## Configured with SkeletonWarrior mesh and animations
 
 func _init() -> void:
-	max_health = 100
-	attack = 15
-	defense = 10
-	speed = 12
+	_configure_stats()
+
+func _setup_stats() -> void:
+	_configure_stats()
+	super._setup_stats()
+
+func _configure_stats() -> void:
+	base_health = 120
+	base_attack = 25
+	base_defense = 20
+	base_speed = 30
 
 # Animation state names (must match AnimationTree states)
 func _get_attack_animation() -> String: return "attack"

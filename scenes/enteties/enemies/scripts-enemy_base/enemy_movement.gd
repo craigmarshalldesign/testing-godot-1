@@ -76,6 +76,10 @@ func _do_wander(delta: float) -> void:
 	_handle_rotation_and_animation()
 
 func _handle_rotation_and_animation() -> void:
+	# Avoid overriding death pose
+	if get("is_dead"):
+		return
+		
 	if not anim_tree:
 		return
 	

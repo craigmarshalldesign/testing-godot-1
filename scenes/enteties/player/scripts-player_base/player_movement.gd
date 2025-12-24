@@ -4,7 +4,7 @@ extends CharacterBody3D
 ## PlayerMovement - Handles physics, gravity, and exploration movement
 
 @export_group("Movement Settings")
-@export var base_speed: float = 10.0
+@export var move_speed: float = 10.0
 @export var jump_velocity: float = 13.5
 @export var rotation_speed: float = 12.0
 
@@ -64,11 +64,11 @@ func _process_movement_input(_delta: float) -> void:
 		direction = direction.normalized() * input_dir.length()
 	
 	if direction:
-		velocity.x = direction.x * base_speed
-		velocity.z = direction.z * base_speed
+		velocity.x = direction.x * move_speed
+		velocity.z = direction.z * move_speed
 	else:
-		velocity.x = move_toward(velocity.x, 0, base_speed)
-		velocity.z = move_toward(velocity.z, 0, base_speed)
+		velocity.x = move_toward(velocity.x, 0, move_speed)
+		velocity.z = move_toward(velocity.z, 0, move_speed)
 	
 	# Jump handling
 	if Input.is_action_just_pressed("jump") and is_on_floor():
