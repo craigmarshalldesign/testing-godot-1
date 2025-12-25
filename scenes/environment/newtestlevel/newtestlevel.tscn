@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://c7yj6qaogcw6o" path="res://meshes/test_level.glb" id="1_jr6rp"]
 [ext_resource type="PackedScene" uid="uid://blw5qrgo7mfk5" path="res://scenes/enteties/player/characters/character-a/character_a.tscn" id="3_iha2s"]
-[ext_resource type="PackedScene" path="res://scenes/enteties/player/characters/character-b/character_b.tscn" id="4_fg3mk"]
+[ext_resource type="PackedScene" uid="uid://d06s350yec243" path="res://scenes/enteties/player/characters/character-b/character_b.tscn" id="4_fg3mk"]
 [ext_resource type="PackedScene" uid="uid://dw8xqr2hy6p3a" path="res://scenes/enteties/player/party_manager.tscn" id="4_party_scene"]
 [ext_resource type="PackedScene" uid="uid://d3ra8101h4igo" path="res://scenes/enteties/enemies/boss/boss1/boss1.tscn" id="6_wg0ih"]
 [ext_resource type="PackedScene" uid="uid://dpvjgk5ujb4v0" path="res://scenes/combat/CombatUI.tscn" id="7_combat_ui"]
@@ -37,16 +37,12 @@ shadow_enabled = true
 [node name="PartyManager" parent="." instance=ExtResource("4_party_scene")]
 
 [node name="CharacterA" parent="PartyManager" instance=ExtResource("3_iha2s")]
-base_health = 120
-base_attack = 25
-base_defense = 20
-base_speed = 30
 
 [node name="CharacterB" parent="PartyManager" instance=ExtResource("4_fg3mk")]
-base_health = 40
-base_attack = 70
-base_defense = 8
-base_speed = 36
+
+[node name="CharacterA2" parent="PartyManager" instance=ExtResource("3_iha2s")]
+
+[node name="CharacterB2" parent="PartyManager" instance=ExtResource("4_fg3mk")]
 
 [node name="CombatUI" parent="." instance=ExtResource("7_combat_ui")]
 
@@ -59,70 +55,56 @@ hit_radius = 1.5
 
 [node name="SkeletonWarrior" parent="." instance=ExtResource("7_ylqo3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.7730482, 2.748072e-05, -19.06718)
-base_health = 85
-base_attack = 25
-base_defense = 8
-base_speed = 10
-hit_radius = null
 
 [node name="SkeletonWarrior2" parent="." instance=ExtResource("7_ylqo3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.2009735, 2.6527046e-05, -16.092098)
-base_health = 85
-base_attack = 25
-base_defense = 8
-base_speed = 10
-hit_radius = null
 
 [node name="SkeletonWarrior3" parent="." instance=ExtResource("7_ylqo3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -29.834677, 7.5182924, -7.9348555)
-base_health = 85
-base_attack = 25
-base_defense = 8
-base_speed = 10
-hit_radius = null
 
 [node name="SkeletonWarrior4" parent="." instance=ExtResource("7_ylqo3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30.208195, 4.4724317, -0.38081032)
-base_health = 85
-base_attack = 25
-base_defense = 8
-base_speed = 10
-hit_radius = null
 
 [node name="SkeletonWarrior5" parent="." instance=ExtResource("7_ylqo3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25.078959, 3.6995273, -3.9755301)
-base_health = 85
-base_attack = 25
-base_defense = 8
-base_speed = 10
-hit_radius = null
 
 [node name="SkeletonWarrior6" parent="." instance=ExtResource("7_ylqo3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30.385489, 0.8945947, 9.603461)
-base_health = 85
-base_attack = 25
-base_defense = 8
-base_speed = 10
-hit_radius = null
 
 [node name="SkeletonWarrior7" parent="." instance=ExtResource("7_ylqo3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.6086483, 7.3854, 24.890125)
-base_health = 85
-base_attack = 25
-base_defense = 8
-base_speed = 10
-hit_radius = null
 
 [node name="SkeletonWarrior8" parent="." instance=ExtResource("7_ylqo3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.3778305, 10.017861, 22.54781)
-base_health = 85
-base_attack = 25
-base_defense = 8
-base_speed = 10
-hit_radius = null
 
 [node name="Boss2" parent="." instance=ExtResource("6_wg0ih")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7137642, 11.431355, 24.473827)
+base_health = 180
+base_attack = 40
+base_speed = 28
+hit_radius = 1.5
+
+[node name="SkeletonWarrior9" parent="." instance=ExtResource("7_ylqo3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.109516, 3.9101732, -14.237163)
+
+[node name="SkeletonWarrior10" parent="." instance=ExtResource("7_ylqo3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.444307, 1.9254721, -19.0312)
+
+[node name="SkeletonWarrior11" parent="." instance=ExtResource("7_ylqo3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.665669, 7.97616, -29.319258)
+
+[node name="SkeletonWarrior12" parent="." instance=ExtResource("7_ylqo3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 27.841465, 7.976162, -26.978285)
+
+[node name="Boss3" parent="." instance=ExtResource("6_wg0ih")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 29.402168, 9.389655, 8.872782)
+base_health = 180
+base_attack = 40
+base_speed = 28
+hit_radius = 1.5
+
+[node name="Boss4" parent="." instance=ExtResource("6_wg0ih")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 27.28798, 9.389656, -0.5944004)
 base_health = 180
 base_attack = 40
 base_speed = 28
