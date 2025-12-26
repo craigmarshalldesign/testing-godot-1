@@ -56,6 +56,7 @@ Every damage instance carries a **Category** and a **Type**.
 We avoided specific "Melee Power" derived stats in favor of **Per-Weapon / Per-Ability Scaling Profiles**.
 *   *Example:* A Greatsword scales primarily with STR, while a Dagger scales primarily with DEX.
 *   *Example:* A Fear ability might scale its duration based on CHA.
+*   *Level Scaling:* All abilities also have a **Per-Level Base Growth** to ensure viability from Level 1-40 independent of stats.
 
 > **Visual Reference:** See `SonderQuest-Targeting-And-AOE.md` for rules on facing arcs (Front/Side/Back) and area shapes.
 

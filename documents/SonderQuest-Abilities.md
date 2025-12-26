@@ -82,13 +82,14 @@ The following fields characterize an Ability definition.
 
 ### F. Scaling Blocks
 Matching the `SonderQuest-Stats.md` definitions:
+*   **Level Scaling:** Coefficient that increases Base Damage/Healing per character level (e.g., `+1.5 per Level`).
 *   **Damage/Healing Scaling:** Primary Attribute + Optional Secondary Attribute (and weights). Used for calculating raw output numbers.
 *   **Effect Scaling:** Primary Attribute + Optional Secondary Attribute. Used for calculating Status Strength (vs Resistance), duration, and utility potency.
 
 ### G. Effects List
 Abilities execute a sequence of **Effects**. If one fails (e.g., missed hit), subsequent effects may be cancelled based on configuration.
 *   **Weapon Strike:** Roll weapon damage, apply weapon scaling, hit check.
-*   **Deal Damage:** Roll ability base damage range, apply Ability Scaling, hit check.
+*   **Deal Damage:** Roll ability base damage range (scaled by Level), apply Ability Scaling, hit check.
 *   **Heal:** Restore HP to target.
 *   **Apply Status:** Attempt to apply a condition.
     *   *Parameters:* Status ID, Duration (Min/Max Turns).
@@ -119,9 +120,10 @@ To allow enemies to use abilities intelligently:
 *   **Category:** Action Ability (Spell)
 *   **Target:** Enemy, Range 8, Single Target.
 *   **Cost:** 15 **Mana**.
+*   **Level Growth:** +2 Damage/Lvl.
 *   **Scaling:** Damage (INT Primary), Effect (INT Primary).
 *   **Effects:**
-    1.  Deal Damage (Base 40-50, Type: Fire).
+    1.  Deal Damage (Base 8-12 + LvlGrowth, Type: Fire).
     2.  Apply Status (Burn, Min 1 Turn, Max 3 Turns).
 *   **AI Hint:** Damage, Clustered Enemies.
 

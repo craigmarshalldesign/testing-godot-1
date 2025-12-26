@@ -35,8 +35,10 @@ Fortune is not an individual stat check; it applies to the **active party** layo
 Instead of a single "Melee Power" or "Ranged Power", every offensive action defines its own scaling profile.
 
 ### Damage Definition Rule
-Weapons and damaging abilities define a **base damage range** (e.g., 7–10), representing the minimum and maximum raw damage they can deal.
-When an attack is executed, a value is rolled from this range and **then** modified by attribute scaling, talents, and effects before any mitigation is applied.
+Weapons and damaging abilities define a **base damage range** (e.g., 7–10) which scales with **Character Level**.
+*   **Growth Logic:** `CurrentBase = InitialBase + (Level * GrowthCoefficient)`.
+*   *Purpose:* Ensures abilities remain viable from Level 1 to 40 even before Attribute scaling.
+When an attack is executed, a value is rolled from this *Level-Scaled* range and **then** modified by attribute scaling, talents, and effects.
 This rule applies uniformly to player characters, enemies, and summoned units.
 
 ### A. Weapon Scaling Profiles
