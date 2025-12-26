@@ -1,124 +1,146 @@
-SonderQuest Game Planning Document
+# SonderQuest Game Planning Document
 
-This document summarizes the core systems planned for the platforming RPG, **SonderQuest**, based on the design conversation.1. Core Design Philosophy
+This document summarizes the core systems planned for the platforming RPG, **SonderQuest**, based on the design conversation.
 
-* **Foundation:** A turn-based, party-system RPG drawing inspiration from *Aidyn Chronicles: The First Mage*, *Baldur's Gate*, and D\&D.  
-* **Unified Ability System:** **Everything is an Ability** (spells, warrior skills, enemy actions). Naming and class-gating are layered on top.  
-  * *Execution:* Abilities are a list of sequentially fired **Effects** (e.g., DealDamage, ApplyStatus, SpawnSummon, ModifyStat).  
-* **Spatial Combat:** Builds on existing turn order (Speed-sorted) and spatial mechanics (range, hit radius, party formation).  
-* **Level Cap:** **40**.  
-* **Max Party Size:** **4 characters**.  
-* **Hub/Roster:** A *Shining Force*\-style hub where all recruited allies gather and can be swapped into the active party.
+> **Note:** For specific details on Attribute Scaling, Damage Formulas, and Skill Checks, please refer to range-bound `documents/SonderQuest-Stats.md` which is now the primary source of truth for those mechanics. This document focuses on the higher-level structural goals.
 
-2\. Damage & Defensive Model
+---
 
-A two-layer system for damage and defense ensures deep tuning control.A. Damage Categorization
+## 1. Core Design Philosophy
 
-Every damage instance has two tags: **Damage Category** (for broad defense) and **Damage Type** (for specific resistance).
+*   **Foundation:** A turn-based, party-system RPG drawing inspiration from *Aidyn Chronicles: The First Mage*, *Baldur's Gate*, and D&D.
+*   **Unified Ability System:** **Everything is an Ability** (spells, warrior skills, enemy actions).
+    *   *Execution:* Abilities are a list of sequentially fired **Effects** (e.g., DealDamage, ApplyStatus, SpawnSummon, ModifyStat).
+*   **Initiative-Based Turns:** Combat uses a visible Initiative stat to determine individual turn order for all units (Party + Enemies).
+*   **Level Cap:** **40**.
+*   **Max Party Size:** **4 characters**.
+*   **Hub/Roster:** A *Shining Force*-style hub where all recruited allies gather and can be swapped into the active party.
+*   **Hero Character:** The leader of the party. If the Hero dies, it is **Game Over**. Other characters have permadeath.
+
+---
+
+## 2. Damage & Defensive Model
+
+A layered system ensures that defense matters at all stages of the game without early-game invincibility or late-game irrelevance.
+
+### A. Damage Categorization
+Every damage instance carries a **Category** and a **Type**. 
 
 | Damage Category | Primary Damage Types | Secondary Tags (Status Effects) |
-| ----- | ----- | ----- |
+| :--- | :--- | :--- |
 | **Physical** | Melee, Ranged, Bleed, Crush | N/A |
 | **Magical** | Fire, Ice, Shock, Poison, Arcane, Nature | Burning, Frozen, Shocked, Poisoned, Wet |
-| **True** | N/A | N/A (Ignores most mitigation) |
+| **True** | N/A | Ignores most mitigation |
 
-B. Defensive Hierarchy
+### B. Defensive Hierarchy
+1.  **Hit/Crit Check:** Accuracy vs Evasion, then Crit Chance.
+2.  **Category Mitigation:** (Physical/Magic Defense) reduces raw damage.
+3.  **Type Resistance:** (Fire Resist, etc.) reduces remaining damage.
+4.  **Final Status:** Buffs/Debuffs apply final multipliers.
 
-Damage is mitigated in two sequential layers:
+---
 
-1. **Layer 1: Category Mitigation**  
-   * **Physical Defense:** Reduces all incoming Physical damage.  
-   * **Magic Defense:** Reduces all incoming Magical damage.  
-   * *Formula:* `DamageAfterCategory = IncomingDamage * (100 / (100 + Defense))`  
-2. **Layer 2: Type Resistance**  
-   * **Resistances:** Melee, Ranged, Fire, Ice, Shock, Poison, Arcane, Nature.  
-   * *Formula:* `DamageAfterType = DamageAfterCategory * (1 - ResistancePercent)` (Typical range: \-50% to \+75%)
+## 3. Core Attributes and Derived Stats
 
-3\. Core Attributes and Derived StatsA. Core Attributes (Primary Stats)
+*See `SonderQuest-Stats.md` for full breakdown derived formulas, party Fortune rules, and scaling profiles.*
 
-These are the foundation, growing via level, class, and gear.
+### A. Core Attributes
+*   **Strength (STR)** (Scaling + Phys Def + Might)
+*   **Dexterity (DEX)** (Scaling + Accuracy/Evasion + Lockpicking + Initiative)
+*   **Intelligence (INT)** (Scaling + Max Mana + Analysis)
+*   **Willpower (WIL)** (Scaling + Magic Def + Mana Regen + Status Resist)
+*   **Vitality (VIT)** (Max HP + Phys Def + Stamina Regen)
+*   **Charisma (CHA)** (Ultimate Charge + Summon/Effect Scaling + Party Fortune)
 
-| Attribute | Primary Benefits (Combat & Skills) |
-| ----- | ----- |
-| **Strength (STR)** | Melee Attack Power, Physical Defense (slight), Carry Capacity, Intimidation Skill. |
-| **Dexterity (DEX)** | Accuracy, Evasion, Ranged Attack Power, Crit Chance (small), Speed, Physical Skills (Lockpicking, Stealth). |
-| **Intelligence (INT)** | Magic Power, Max Mana, Elemental Effect Chance, Knowledge Skills (Lore, Arcana). |
-| **Willpower (WIL)** | Magic Defense, Status Resistance, Mana Regeneration, Survival Skills. |
-| **Vitality (VIT)** | Max HP, Physical Defense, Healing Received. |
-| **Charisma (CHA)** | Dialogue outcomes, Vendor prices, Social Skills (Persuasion, Deception). |
+### B. Scaling Philosophy
+We avoided specific "Melee Power" derived stats in favor of **Per-Weapon / Per-Ability Scaling Profiles**.
+*   *Example:* A Greatsword scales primarily with STR, while a Dagger scales primarily with DEX.
+*   *Example:* A Fear ability might scale its duration based on CHA.
 
-B. Derived Combat Stats
+> **Visual Reference:** See `SonderQuest-Targeting-And-AOE.md` for rules on facing arcs (Front/Side/Back) and area shapes.
 
-These are calculated based on attributes, level growth, and gear.
+---
 
-* **Resources:** Max HP, Max Mana, Max Stamina (derived from STR \+ DEX).  
-* **Offensive Power:** Melee Attack Power, Ranged Attack Power, Magic Power.  
-* **Critical:** Crit Chance, Crit Damage (Base 150%).  
-* **Speed:** Affects turn order and movement radius in combat.  
-* **Accuracy / Avoidance:** Accuracy (from DEX), Evasion (from DEX and movement bonuses).
+## 4. Stat Growth Model (The "Layer" System)
 
-C. Status Interaction Stats
+To support **Class Swapping** without losing base identity, final stats are calculated across three layers:
 
-* **Status Chance:** Base ability chance modified by INT and talents.  
-* **Status Resistance:** Derived from WIL.  
-* **Duration Modifiers:** Buff Duration Bonus, Debuff Duration Reduction.
+`FinalStats = (SpeciesBase + CharacterGrowth + ClassGrowth) * Multipliers + FlatBonuses`
 
-4\. Stat Growth Model (Supports Class Swapping)
+*   **SpeciesBase (Level 1-40):** Basic human, wolf, or skeleton curve. 
+*   **CharacterGrowth:** Small unique bonuses (e.g., "Ally A" gets +1 STR every 3 levels regardless of class).
+*   **ClassGrowth:** The primary driver. If you switch from Warrior to Mage, this entire layer swaps, recalculating HP, MP, and Power.
 
-Final stats are determined by layers, allowing a character to swap classes without resetting their identity.
+---
 
-**FinalStats(level) \= SpeciesBase(level) \+ CharacterGrowth(level) \+ ClassGrowth(level) \+ Gear \+ TemporaryEffects**
+## 5. Skills & Exploration Checks
 
-* **SpeciesBase:** The base curve for the creature (human, wolf, goblin).  
-* **CharacterGrowth:** The unique personal curve for a specific companion.  
-* **ClassGrowth:** The class overlay, which is the only layer that changes upon class swap.
+We distinguish between **Attribute Modifiers** for interaction and **Utility Abilities** for traversal.
 
-5\. Skills (Non-Combat/Exploration)
+*   **Attribute Checks (Roll-Based):**
+    *   **Might (STR):** Move objects, break weak walls.
+    *   **Lockpicking (DEX):** Open chests/doors.
+    *   **Analysis (INT):** Decipher runes, operate devices.
+*   **Utility Abilities (Movement Phase):**
+    *   **Dash / Teleport:** Position readjustment.
+    *   **World Interaction:** Smash Wall, Freeze Water (handled as Utility Abilities).
 
-Skills are flat numeric values tied to attributes for checks (e.g., Lockpicking \+ DEX modifier vs. Difficulty Class).
+---
 
-| Skill Category | Skills (Examples) | Governing Attribute |
-| ----- | ----- | ----- |
-| **Physical** | Athletics, Acrobatics, Stealth, Lockpicking, Traps | DEX, STR |
-| **Knowledge** | Lore, Arcana, Nature, Engineering, Medicine | INT |
-| **Social** | Persuasion, Intimidation, Deception, Leadership | CHA |
-| **Survival** | Tracking, Survival | WIL, DEX |
+## 6. Class System (Launch Roster)
 
-6\. Class System (Launch Roster)
+Classes offer different **ClassGrowth** layers, talent trees, and unique exploration abilities.
 
-Classes offer different **ClassGrowth** layers, talent trees, and unique exploration abilities.A. Ability Loadout Rules
+### A. Ability Loadout Rules
+*   **Active Slots:** Players can equip up to **8** active abilities for combat.
+*   **Ultimate:** Has its own separate slot and is not counted in the 8.
+*   **Basic Attack:** Always available, does not use a slot.
+*   **Scrolls:** Grant ability unlocks with class/stat/talent-point requirements, acting as utility or side-grades.
+*   **Resets:** Players can reset their talents whenever they please (available at Hub/Camp).
 
-* **Active Slots:** Players can equip up to **8** active abilities for combat.  
-* **Ultimate:** Has its own separate slot and is not counted in the 8\.  
-* **Basic Attack:** Always available, does not use a slot.  
-* **Scrolls:** Grant ability unlocks with class/stat/talent-point requirements, acting as utility or side-grades.
-
-B. Ultimate System
-
-* **Charge Mechanic:** `UltimateCharge 0-100`.  
-* **Charge Gain:** \+X charge at the start of the character's turn (baseline \+10), with bonuses from certain actions.  
-* **Usage:** Ultimate consumes 100 Charge.
-
-C. Launch Classes
+### B. Launch Classes
 
 | Class | Role Focus | Resources | Key Exploration Abilities | Ultimate | Passives |
-| ----- | ----- | ----- | ----- | ----- | ----- |
-| **Mage** | Nuker, Control, Utility | Mana | Arcane Sight, Telekinesis, Elemental Interaction (Melt/Freeze) | **Arcane Tempest** (Large AOE) | Bonus elemental effect chance. |
-| **Warrior** | Frontliner, Tank, Melee Damage | Stamina, Rage | Break Barriers, Lift Heavy Objects, Intimidate Dialogue | **War Cry of the Fallen** (Party buff \+ Taunt/Fear) | Reduced damage from first hit each turn. |
-| **Druid** | Traversal, Nature Control, Healer | Mana/Spirit | Bird Form (Flight), Wolf Form (Gaps), Root Growth, Calm Beasts | **Avatar of the Wild** (Empowered form \+ Aura) | Passive regen outdoors. |
-| **Thief/Assassin** | Exploration Specialist, Tactical Striker | Stamina | Lockpicking, Trap Detection/Disarm, Silent Movement, Wall Climb | **Perfect Silence** (Vanish \+ Massive damage opener) | Increased loot quality and trap success. |
-| **Hero** | Adaptable Fighter, Alignment Focus | Stamina | Rally (Party Movement Buff), Light/Shadow Path abilities (Partial utility) | **Fatebreaker** (Big single-target hit with alignment bonus) | Party-wide minor stat bonus. |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Mage** | Nuker, Control, Utility | Mana | Arcane Sight, Telekinesis, Elemental Interaction | **Arcane Tempest** (Large AOE) | Bonus elemental effect chance. |
+| **Warrior** | Frontliner, Tank, Melee Damage | Stamina | Break Barriers, Lift Heavy Objects, Intimidate | **War Cry of the Fallen** (Party buff + Taunt) | Reduced damage from first hit each turn. |
+| **Druid** | Traversal, Nature, Healer | Mana/Stamina | Bird Form (Flight), Wolf Form (Gaps), Root Growth | **Avatar of the Wild** (Empowered form + Aura) | Passive regen outdoors. |
+| **Thief** | Exploration, Tactical Striker | Stamina | Lockpicking, Trap Disarm, Wall Climb, Shadow Step | **Perfect Silence** (Vanish + Massive backstab) | Increased loot quality and trap success. |
+| **Hero** | Adaptable Fighter, Leader | Stamina | Rally (Movement Buff), Light/Shadow Path | **Fatebreaker** (Single-target hit with alignment bonus) | Party-wide minor stat bonus. |
 
-7\. Permadeath and Exploration Gating
+---
 
-* **Rule:** Allies die permanently; Hero death is Game Over.  
-* **Exploration Gating:** Obstacles are tagged by **capability requirements** (e.g., `lockpick` OR `brute_force` OR `magic_unlock`), not by class. This prevents soft-locks if a key character dies.  
-* **Hub:** Functions as a memorial for fallen allies and a place to recruit replacements.
+## 7. Ultimate System
 
-8\. Experience and Level Control
+*   **Charge Mechanic:** `UltimateCharge 0-100`.
+*   **Charge Gain:** +10 charge at the start of the character's turn (baseline).
+*   **Usage:** Ultimate consumes 100 Charge.
 
-* **Grinding Control:** Enemies below a certain level difference grant reduced or zero XP.  
-  * *Suggested Formula:* Enemy level ≤ player level \- 4 → **0 XP**.  
-  * This ensures the player must progress to gain experience effectively.  
-* **Enemy Scaling:** Enemies use the same stat, ability, and cooldown systems as players, ensuring fair and legible combat.
+---
 
+## 8. Permadeath and Exploration Gating
+
+*   **Rule:** Allies die permanently; Hero death is Game Over.
+*   **Hub:** Physically populated by all recruited allies. Includes memorials for the fallen.
+
+---
+
+## 9. Experience and Level Control
+
+*   **Grinding Control:** Enemies below a certain level difference grant reduced or zero XP.
+*   **Enemy Scaling:** Enemies use the same stat, ability, and cooldown systems as players.
+
+---
+
+## 10. Combat Math Examples (Updated)
+
+*See `SonderQuest-Stats.md` for the exact breakdown of how resistance affects duration logic.*
+
+**Scenario: A Mage casts "Fireball" (Base Range 40-50) at a Shielded Warrior.**
+1.  **Damage Roll:** Rolls a 45.
+2.  **Scaling:** Mage has high INT. Scaling adds +30 Damage. Total = 75.
+3.  **Mitigation:** Warrior has Magic Defense. Reduces damage to 50.
+4.  **Resistance:** Warrior has Fire Resist. Reduces damage to 40.
+5.  **Status:** Mage's Effect Strength checks against Warrior's Status Resistance (WIL).
+    *   *If Pass:* Burn applies. Initial duration set based on strength margin.
+    *   *Each Turn:* Warrior rolls Break Check to end burn early.
