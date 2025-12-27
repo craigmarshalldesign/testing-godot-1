@@ -18,7 +18,7 @@ This document serves as the primary technical reference for the v1 stat system.
 | **Dexterity (DEX)** | Scaling source for Weapons/Abilities. Increases **Accuracy**, **Evasion**, **Move Radius**, **Crit Chance**. | Contributes to **Lockpicking**. |
 | **Intelligence (INT)** | Scaling source for Spells/Abilities. Increases **Max Mana**. | Contributes to **Analysis**. |
 | **Willpower (WIL)** | Scaling source for Spells/Abilities. Increases **Magic Defense**, **Mana Regen**, **Status Resist**. | **None** (Intentional for v1). |
-| **Vitality (VIT)** | Increases **Max HP**, **Stamina Regen**, and **Physical Defense**. | **None** (Intentional for v1). |
+| **Vitality (VIT)** | Increases **Max HP**, **Max Stamina**, **Stamina Regen**, and **Physical Defense**. | **None** (Intentional for v1). |
 | **Charisma (CHA)** | Increases **Ultimate Charge Rate**. Scaling source for Presence abilities. | Contributes to **Fortune**. |
 
 ### Fortune (Party Rule)
@@ -35,10 +35,10 @@ Fortune is not an individual stat check; it applies to the **active party** layo
 Instead of a single "Melee Power" or "Ranged Power", every offensive action defines its own scaling profile.
 
 ### Damage Definition Rule
-Weapons and damaging abilities define a **base damage range** (e.g., 7–10) which scales with **Character Level**.
-*   **Growth Logic:** `CurrentBase = InitialBase + (Level * GrowthCoefficient)`.
-*   *Purpose:* Ensures abilities remain viable from Level 1 to 40 even before Attribute scaling.
-When an attack is executed, a value is rolled from this *Level-Scaled* range and **then** modified by attribute scaling, talents, and effects.
+Weapons and damaging abilities define a **Baseline Range at Level 1** (e.g., 7–10).
+*   **Growth Logic:** `CurrentBase = Base_L1 * PowerCurve(t)`, where `t` is normalized level progress (0..1).
+*   *Purpose:* Ensures abilities remain viable from Level 1 to 40 via a unified global curve.
+When an attack is executed, a value is rolled from this *Curve-Scaled* range and **then** modified by attribute scaling, talents, and effects.
 This rule applies uniformly to player characters, enemies, and summoned units.
 
 ### A. Weapon Scaling Profiles
@@ -72,11 +72,11 @@ Determines potency of non-damage effects (Fear duration, Stun chance, Debuff mag
 
 ### Resources & Regen
 All characters share the same resource pools. Regeneration occurs at the **End of Turn**.
-*   **Max HP** (from VIT): Health pool.
-*   **Max Mana** (from INT): Resource for spells.
-    *   **Mana Regen:** Derived primarily from **WIL**. Can be modified independently.
-*   **Max Stamina** (from Physical Stats): Resource for physical abilities.
-    *   **Stamina Regen:** Derived primarily from **VIT**. Can be modified independently.
+*   **Max HP**: `Baseline + (VIT * HP_PER_VIT)`.
+*   **Max Mana**: `Baseline + (INT * MANA_PER_INT)`.
+    *   **Mana Regen:** `BaseRegen + (WIL * MANA_REGEN_PER_WIL)`.
+*   **Max Stamina**: `Baseline + (VIT * STAM_PER_VIT)`.
+    *   **Stamina Regen:** `BaseRegen + (VIT * STAM_REGEN_PER_VIT)`.
 
 ### Defense & Mitigation
 *   **Physical Defense** (VIT Primary, STR Secondary): Mitigation for physical damage categories.
@@ -116,6 +116,12 @@ At the start of each affected turn, the target rolls a **Break Check**.
 *   **Formula:** Compare remaining `Status Strength` vs `Status Resistance`.
 *   **Success:** Status ends early.
 *   **Fail:** Status continues, duration ticks down by 1.
+
+### Duration & Ticking
+*   **Phased:** Effects tick at the **Start of Turn**.
+*   **Clamping:** Minimum (1) and Maximum (3-5) duration turns are defined in data.
+*   **No Level Scaling:** Status duration and potency (e.g. Stun length) do **not** scale with character level in v1. They are fixed constants defined in the status. Damage-over-time effects scale via their distinct `DealDamage` tick effects using the Power Curve.
+*   **Break Checks:** End of Turn roll to remove status early.
 
 *Example:* A weak 'Burn' might be extinguished by a high-WIL character after 1 turn, while a robust 'Root' might persist for the full maximum duration against a low-WIL target.
 

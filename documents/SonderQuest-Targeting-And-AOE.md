@@ -1,6 +1,7 @@
 # SonderQuest Targeting & Area of Effect (AoE) Design
 
-This document defines the rules for targeting, range, and area shapes used by **Abilities** and **Weapons**, as well as the behavior of persistent zones.
+This document defines the rules for targeting, range, and area shapes used by **Abilities** and **Weapons**.
+> **Implementation:** These concepts map directly to the `AbilityTargetingDef` resource schema validation rules defined in `SonderQuest-Implementation-Architecture-Plan.md`.
 
 ---
 

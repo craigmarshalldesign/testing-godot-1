@@ -49,14 +49,14 @@ Every damage instance carries a **Category** and a **Type**.
 *   **Dexterity (DEX)** (Scaling + Accuracy/Evasion + Lockpicking + Initiative)
 *   **Intelligence (INT)** (Scaling + Max Mana + Analysis)
 *   **Willpower (WIL)** (Scaling + Magic Def + Mana Regen + Status Resist)
-*   **Vitality (VIT)** (Max HP + Phys Def + Stamina Regen)
+*   **Vitality (VIT)** (Max HP + Max Stamina + Stamina Regen + Phys Def)
 *   **Charisma (CHA)** (Ultimate Charge + Summon/Effect Scaling + Party Fortune)
 
 ### B. Scaling Philosophy
 We avoided specific "Melee Power" derived stats in favor of **Per-Weapon / Per-Ability Scaling Profiles**.
 *   *Example:* A Greatsword scales primarily with STR, while a Dagger scales primarily with DEX.
 *   *Example:* A Fear ability might scale its duration based on CHA.
-*   *Level Scaling:* All abilities also have a **Per-Level Base Growth** to ensure viability from Level 1-40 independent of stats.
+*   *Level Scaling:* All numeric base values (Health, Damage) are multiplied by a global **Power Curve** based on level `t` (0..1). This replaces linear per-level growth coefficients.
 
 > **Visual Reference:** See `SonderQuest-Targeting-And-AOE.md` for rules on facing arcs (Front/Side/Back) and area shapes.
 

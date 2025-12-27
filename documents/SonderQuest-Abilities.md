@@ -82,14 +82,14 @@ The following fields characterize an Ability definition.
 
 ### F. Scaling Blocks
 Matching the `SonderQuest-Stats.md` definitions:
-*   **Level Scaling:** Coefficient that increases Base Damage/Healing per character level (e.g., `+1.5 per Level`).
+> **Note:** Numeric level scaling for Damage/Healing is handled automatically by the **Power Curve** on `EffectDef`. It is not defined here.
 *   **Damage/Healing Scaling:** Primary Attribute + Optional Secondary Attribute (and weights). Used for calculating raw output numbers.
-*   **Effect Scaling:** Primary Attribute + Optional Secondary Attribute. Used for calculating Status Strength (vs Resistance), duration, and utility potency.
+*   **Effect Scaling:** Primary Attribute + Optional Secondary Attribute. Used for calculating Status Strength (vs Resistance) and utility potency. Status duration does NOT scale with level.
 
 ### G. Effects List
 Abilities execute a sequence of **Effects**. If one fails (e.g., missed hit), subsequent effects may be cancelled based on configuration.
 *   **Weapon Strike:** Roll weapon damage, apply weapon scaling, hit check.
-*   **Deal Damage:** Roll ability base damage range (scaled by Level), apply Ability Scaling, hit check.
+*   **Deal Damage:** Roll baseline damage range (L1 * Curve), apply Ability Scaling, hit check.
 *   **Heal:** Restore HP to target.
 *   **Apply Status:** Attempt to apply a condition.
     *   *Parameters:* Status ID, Duration (Min/Max Turns).
@@ -117,17 +117,18 @@ To allow enemies to use abilities intelligently:
 ## 6. Examples
  
 **1. Fireball**
+*   **ID:** `abilities/action/magic/fireball`
 *   **Category:** Action Ability (Spell)
 *   **Target:** Enemy, Range 8, Single Target.
 *   **Cost:** 15 **Mana**.
-*   **Level Growth:** +2 Damage/Lvl.
 *   **Scaling:** Damage (INT Primary), Effect (INT Primary).
 *   **Effects:**
-    1.  Deal Damage (Base 8-12 + LvlGrowth, Type: Fire).
+    1.  Deal Damage (Base_L1: 8-10, scales w/ Curve, Type: Fire).
     2.  Apply Status (Burn, Min 1 Turn, Max 3 Turns).
 *   **AI Hint:** Damage, Clustered Enemies.
 
 **2. Charged Strike**
+*   **ID:** `abilities/action/melee/charged_strike`
 *   **Category:** Action Ability (Weapon-Based)
 *   **Requirement:** Melee Weapon.
 *   **Target:** Enemy, Range: Weapon Range.
@@ -135,11 +136,12 @@ To allow enemies to use abilities intelligently:
 *   **Scaling:** Damage (Inherits Weapon Scaling), Effect (DEX Primary).
 *   **Effects:**
     1.  Weapon Strike (100% Weapon Damage).
-    2.  Deal Damage (Bonus 10-15 Lightning, separate roll).
+    2.  Deal Damage (Base_L1: 4-6, scales w/ Curve, Type: Lightning, separate roll).
     3.  Apply Status (Shock, Min 1 Turn, Max 2 Turns).
 *   **AI Hint:** Damage, Opener.
 
 **3. Smash Wall (Utility Ability)**
+*   **ID:** `abilities/utility/interaction/smash_wall`
 *   **Category:** Utility / Interaction
 *   **Phase:** Movement Phase.
 *   **Target:** World Object (Tag: Breakable), Cone shape (short range).
@@ -148,7 +150,8 @@ To allow enemies to use abilities intelligently:
     1.  Environment Interaction (Tag: Smash, Force: High).
 *   **Note:** Opens paths, breaks crates. Does NOT damage enemies.
 
-**4. Bird Burst (Utility Ability)**
+**4. Bird Form (Utility Ability)**
+*   **ID:** `abilities/utility/mobility/bird_form`
 *   **Category:** Utility / Movement
 *   **Phase:** Movement Phase.
 *   **Target:** Ground Point or Direction.

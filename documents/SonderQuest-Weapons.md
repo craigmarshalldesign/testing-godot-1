@@ -12,10 +12,10 @@ Weapons are equipment items that define the baseline **Strike Parameters** for a
 
 ## 2. Weapon Hierarchy Convention
 
-To keep data manageable, weapons follow a hierarchy:
-1.  **Base Weapon Definition:** Abstract class handling common logic (equip slots, durability if applicable).
-2.  **Weapon Family:** Broad categories like "Swords", "Daggers", "Bows". (Defines shared traits like "Melee", "Two-Handed", "Standard Range").
-3.  **Concrete Weapon:** Specific items like "Bronze Sword", "Iron Greatsword", "Golden Bow". (Defines specific stats and scaling).
+## 2. Weapon Hierarchy Convention
+Matches the `WeaponFamilyDef` and `WeaponDef` split in the Architecture Plan.
+1.  **Weapon Family Resource:** Defines shared behavior (Animation Set, Default Scaling Attributes, Handedness).
+2.  **Weapon Item Resource:** Defines the specific stats (Damage L1, Tier, Modifiers) and references a Family.
 
 ---
 
@@ -39,7 +39,8 @@ The following fields characterize a Weapon definition.
 *   **Tags:** `Finesse` (DEX), `Heavy` (STR), `Reach`, `Thrown`.
 
 ### C. Core Combat Numbers
-*   **Base Damage Range:** **Min** and **Max** integers (e.g., 8–12). *This is the raw roll before scaling.*
+*   **Base Damage Range (L1):** **Min** and **Max** integers (e.g., 8–12).
+    *   *Logic:* This is the **Baseline at Level 1**. It is multiplied by the global **Power Curve** at runtime before attribute scaling is added.
 *   **Attack Range:** Override for attack distance (e.g., Bow = 12m, Spear = 2m).
 *   **Accuracy Mod:** Additive bonus/penalty to hit chance (e.g., Heavy Hammer -10%, Dagger +5%).
 *   **Crit Chance Mod:** Additive bonus to crit chance.
