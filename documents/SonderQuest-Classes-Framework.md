@@ -96,9 +96,9 @@ The tactical infiltrator and striker.
 *   **Assassin:** Lethal close-range killer.
     *   *Themes:* Backstabs, burst damage, positioning.
     *   *Example:* **Backstab** (Teleport rear + bonus damage).
-*   **Stalker:** Mobile hunter and ranged skirmisher.
-    *   *Themes:* Ranged attacks, evasion, kiting.
-    *   *Example:* **Shadow Shot** (Ranged damage + Accuracy debuff).
+*   **Stalker:** Mobile skirmisher mastering thrown weapons.
+    *   *Themes:* Thrown daggers, evasion, mid-range kiting.
+    *   *Example:* **Shadow Throw** (Thrown dagger + Blind).
 *   **Corruptor:** Poisoner and debuffer using dark alchemy.
     *   *Themes:* Poison, attrition, shadow magic.
     *   *Example:* **Toxic Blade** (Melee + Poison DoT).
@@ -219,7 +219,9 @@ Classes must reside in the `res://data/layers/classes/` directory to facilitate 
 **Example Stable IDs:**
 *   `layers/classes/warrior`
 *   `layers/classes/mage`
+*   `layers/classes/mage`
 *   `layers/classes/thief`
+*   `layers/classes/hero`
 *   `layers/classes/hero`
 *   `layers/classes/druid`
 
