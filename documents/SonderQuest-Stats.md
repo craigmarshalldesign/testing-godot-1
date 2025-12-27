@@ -42,6 +42,7 @@ When an attack is executed, a value is rolled from this *Curve-Scaled* range and
 This rule applies uniformly to player characters, enemies, and summoned units.
 
 ### A. Weapon Scaling Profiles
+Weapons are equipped in the **Main Weapon** slot.
 Weapons define a primary attribute and an optional secondary attribute.
 *   **Greatsword:** `STR (Primary) + DEX (Secondary)`
 *   **Dagger:** `DEX (Primary) + STR (Secondary)`
@@ -80,7 +81,9 @@ All characters share the same resource pools. Regeneration occurs at the **End o
 
 ### Defense & Mitigation
 *   **Physical Defense** (VIT Primary, STR Secondary): Mitigation for physical damage categories.
+    *   *Modified by:* Heavy/Medium/Light Armor (Head/Torso/Legs) and Shields.
 *   **Magic Defense** (WIL): Mitigation for magical damage categories.
+    *   *Modified by:* Armor and Shields.
 
 ### Hit & Avoidance
 *   **Accuracy** (from DEX): Hit chance modifier.

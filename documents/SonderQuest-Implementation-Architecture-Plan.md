@@ -261,7 +261,9 @@ The `StatResolver` performs these steps in order:
     *   `DerivedStamina = ScaledBaselines.Stamina + (RawAttributes.VIT * STAM_PER_VIT)`.
     *   `DerivedManaRegen = ManaRegenBase + (RawAttributes.WIL * MANA_REGEN_PER_WIL)`.
     *   `DerivedStaminaRegen = StaminaRegenBase + (RawAttributes.VIT * STAMINA_REGEN_PER_VIT)`.
-    *   **Substats:** Derived stats like Accuracy/Crit are calculated here using fixed formulas defined in `StatResolver` constants.
+    *   `DerivedStaminaRegen = StaminaRegenBase + (RawAttributes.VIT * STAMINA_REGEN_PER_VIT)`.
+    *   **Substats:** Derived stats like Accuracy/Crit are calculated here.
+    *   **Defense:** Base mitigation from Layers/Attributes is summed with **Armor** (Head/Torso/Legs) and **Shield** stats.
 5.  **Equipment & Buffs (Runtime Only):**
     *   Add weapon/gear bonuses to final values.
     *   Apply Status Effect modifiers.
@@ -306,6 +308,8 @@ The `StatResolver` performs these steps in order:
 *   **Error:** WeaponDef missing scaling profile.
 *   **Error:** UnitArchetype referencing non-existent Layer ID or empty layer stack.
 *   **Error:** Circular dependency in Layers (though unlikely with stack list).
+*   **Error:** Class starting gear includes Shield but no One-Handed Weapon.
+*   **Error:** Class references undefined armor categories (e.g., "Plate" instead of "Heavy").
 *   **Warning:** Missing Icon for visible element.
 *   **Warning:** Unit without a default weapon (will fallback to Unarmed).
 

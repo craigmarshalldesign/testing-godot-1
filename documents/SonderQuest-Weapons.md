@@ -6,7 +6,7 @@ This document defines the conceptual data structure for **Weapons**. It aligns w
 
 ## 1. Definition
 
-Weapons are equipment items that define the baseline **Strike Parameters** for a character. They are used by the **Basic Attack** action and by any **Weapon-Based Ability**. A weapon provides the base damage range, the damage type, and the attribute scaling logic.
+Weapons are equipment items that define the baseline **Strike Parameters** for a character. They are equipped in the **Main Weapon** slot. They are used by the **Basic Attack** action and by any **Weapon-Based Ability**. A weapon provides the base damage range, the damage type, and the attribute scaling logic.
 
 ---
 
@@ -32,7 +32,10 @@ The following fields characterize a Weapon definition.
 
 ### B. Classification
 *   **Weapon Family:** `Sword`, `Axe`, `Hammer`, `Dagger`, `Bow`, `Staff`.
-*   **Handedness:** `One-Handed` (Allows shield/offhand) or `Two-Handed` (Blocks offhand).
+*   **Handedness:**
+    *   `One-Handed`: Allows a Shield in the Shield slot.
+    *   `Two-Handed`: Blocks the usage of the Shield slot.
+*   **Note:** Shields are **not** defined as Weapons. They are a separate Item Type equipped in the Shield slot.
 *   **Resistance Tags:**
     *   **Category:** `Physical` or `Magical` (defines which defense layer applies).
     *   **Type:** `Melee`, `Ranged`, `Crush`, `Bleed`, `Fire`, etc. (defines which resistance applies).
