@@ -148,7 +148,7 @@ Damage calculation follows a layered "Category -> Type" system.
     *   **True** (Ignores mitigation)
 *   **Damage Type** (Specific resistance modifiers)
     *   *Physical Types:* Melee, Ranged, Crush, Bleed.
-    *   *Magical Types:* Fire, Ice, Shock, Poison, Arcane, Nature.
+    *   *Magical Types:* Fire, Water, Ice, Lightning, Poison, Arcane, Nature, Shadow, Radiant.
 
 ### Weakness & Resistance Logic
 *   **Percentage Modifiers:** Type Resistances can be positive (Resistance) or negative (Weakness).

@@ -57,7 +57,7 @@ This section defines the 5 supported classes and their 3 Specialization themes.
 
 ### 1. Hero
 The adaptable protagonist archetype.
-*   **Armor Proficiency:** Heavy,Medium, Light.
+*   **Armor Proficiency:** Heavy, Medium, Light.
 *   **Blademaster:** Master of weapons and direct combat.
     *   *Themes:* Precision, stamina-driven offense, multi-hit.
     *   *Example:* **Cleave** (Wide swing hitting multiple enemies).

@@ -116,3 +116,35 @@ Armor and Shields use a separate definition schema focused on Mitigation and Sta
 *   **Requirement:** Can only be equipped if the Main Weapon is **One-Handed**.
 *   **Mitigation:** Shield Defense is added to the character's Total Defense alongside armor pieces.
 *   **Block mechanics:** Handled via Active Abilities (e.g., "Shield Block") or Passive Effects, not inherent generic block chance in v1.
+
+## 6. On-Hit Weapon Effects (v1)
+
+### A. Purpose
+Some weapons add extra effects that trigger when a `WeaponStrike` hits. This is primarily for:
+*   **Basic Attack feel:** Adding elemental flavor to weapon strikes.
+*   **Multi-hit skills:** Driven by weapon properties.
+*   **Test Case:** `Wolfkin Claws` is the first v1 test case.
+
+### B. Core Contract
+*   **Trigger:** On-hit triggers **once per successful WeaponStrike hit**.
+    *   If a WeaponStrike misses, on-hit does not trigger.
+    *   If a WeaponStrike hits multiple targets (e.g., Cleave), on-hit triggers **once per target**.
+    *   If a WeaponStrike is multi-hit (e.g., Shadowstep Barrage), on-hit triggers **once per hit instance**.
+*   **Ownership:** On-hit effects are owned by the weapon, not the ability.
+
+### C. Scaling
+*   On-hit effects use the **weapon’s scaling profile** by default.
+*   They do **NOT** inherit the ability’s `scaling_damage` or `scaling_effect`.
+*   This ensures Basic Attack procs trigger identically to ability-driven WeaponStrikes.
+
+### D. Damage Types
+*   On-hit damage has its own independent damage type (e.g., Nature).
+*   It is mitigated separately by the defender’s relevant defenses.
+*   It is logged as a separate data instance.
+
+### E. Resolution Order
+1.  Determine hit result (hit/miss).
+2.  If hit:
+    *   Roll/Apply `WeaponStrike` damage.
+    *   Apply `On-Hit Extra Effects` (each resolves as its own instance).
+    *   Continue resolving other ability effects.

@@ -29,7 +29,7 @@ Every damage instance carries a **Category** and a **Type**.
 | Damage Category | Primary Damage Types | Secondary Tags (Status Effects) |
 | :--- | :--- | :--- |
 | **Physical** | Melee, Ranged, Bleed, Crush | N/A |
-| **Magical** | Fire, Ice, Shock, Poison, Arcane, Nature, Shadow | Burning, Frozen, Shocked, Poisoned, Wet, Blinded |
+| **Magical** | Fire, Water, Ice, Lightning, Poison, Arcane, Nature, Shadow, Radiant | Burning, Frozen, Poisoned, Wet, Blinded |
 | **True** | N/A | Ignores most mitigation |
 
 ### B. Defensive Hierarchy

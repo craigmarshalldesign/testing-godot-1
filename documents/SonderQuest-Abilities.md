@@ -138,6 +138,13 @@ Any numeric effect **may override** the inherited scaling profile by specifying 
 
 > **Design Note:** Ability Damage Scaling is primarily for `DealDamage` effects. If an ability contains both WeaponStrike and DealDamage effects, only the DealDamage uses ability scaling by default.
 
+### E. On-Hit Trigger Rule
+
+`WeaponStrike` is the **only effect** that triggers weapon on-hit effects.
+*   **Triggers On:** Basic Attacks, Weapon Skills (e.g., Cleave, Backstab).
+*   **Does NOT Trigger On:** `DealDamage` (Spells), `Heal`, `ApplyStatus`.
+*   **Multi-Hit:** If WeaponStrike hits multiple times or multiple targets, on-hit triggers once per valid hit instance.
+
 ### E. Zone Snapshot Rule
 
 Persistent zones (Fire Patch, Poison Cloud) **snapshot** the caster's scaling attributes at cast time.
@@ -204,7 +211,7 @@ To allow enemies to use abilities intelligently:
 *   **Effects:**
     1.  Weapon Strike (100% Weapon Damage).
     2.  Deal Damage (Base_L1: 4-6, scales w/ Curve, Type: Lightning, separate roll).
-    3.  Apply Status (Shock, Min 1 Turn, Max 2 Turns).
+    3.  Apply Status (Stunned, Min 1 Turn, Max 1 Turn).
 *   **AI Hint:** Damage, Opener.
 
 **3. Smash Wall (Utility Ability)**

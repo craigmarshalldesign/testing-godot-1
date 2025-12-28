@@ -483,9 +483,9 @@ Armor in v1 is defined as equipment occupying three specific slots. It provides 
 
 ### Equipping Rules
 Classes define their **Highest Armor Proficiency**. They can equip that category and anything lighter.
-*   **Heavy Classes (Warrior):** Can equip Heavy, Medium, Light.
-*   **Medium Classes (Thief, Hero):** Can equip Medium, Light.
-*   **Light Classes (Mage, Druid):** Can equip Light only.
+*   **Heavy Classes (Warrior, Hero):** Can equip Heavy, Medium, Light.
+*   **Medium Classes (Thief, Druid):** Can equip Medium, Light.
+*   **Light Classes (Mage):** Can equip Light only.
 
 ### Stat Placeholders (v1)
 *   **Defense:** Physical damage reduction.
@@ -579,7 +579,7 @@ Families standardize armor visuals and baseline stat ratios per slot/weight.
 
 ### Heavy Set (Bronze)
 **1. Bronze Helmet**
-*   **ID:** `armor/heavy/bronze_helmet`
+*   **ID:** `armor/heavy/helmet/bronze_helmet`
 *   **Display Name:** Bronze Helmet
 *   **Family ID:** `armor/families/heavy_head`
 *   **Category:** Heavy
@@ -592,7 +592,7 @@ Families standardize armor visuals and baseline stat ratios per slot/weight.
 *   **Notes:** Basic starter helm for heavy users.
 
 **2. Bronze Breastplate**
-*   **ID:** `armor/heavy/bronze_torso`
+*   **ID:** `armor/heavy/torso/bronze_breastplate`
 *   **Display Name:** Bronze Breastplate
 *   **Family ID:** `armor/families/heavy_torso`
 *   **Category:** Heavy
@@ -605,7 +605,7 @@ Families standardize armor visuals and baseline stat ratios per slot/weight.
 *   **Notes:** Basic starter plate.
 
 **3. Bronze Greaves**
-*   **ID:** `armor/heavy/bronze_legs`
+*   **ID:** `armor/heavy/legs/bronze_greaves`
 *   **Display Name:** Bronze Greaves
 *   **Family ID:** `armor/families/heavy_legs`
 *   **Category:** Heavy
@@ -619,7 +619,7 @@ Families standardize armor visuals and baseline stat ratios per slot/weight.
 
 ### Medium Set (Leather)
 **4. Leather Helmet**
-*   **ID:** `armor/medium/leather_helmet`
+*   **ID:** `armor/medium/helmet/leather_cap`
 *   **Display Name:** Leather Cap
 *   **Family ID:** `armor/families/medium_head`
 *   **Category:** Medium
@@ -632,7 +632,7 @@ Families standardize armor visuals and baseline stat ratios per slot/weight.
 *   **Notes:** Basic starter cap.
 
 **5. Leather Tunic**
-*   **ID:** `armor/medium/leather_torso`
+*   **ID:** `armor/medium/torso/leather_tunic`
 *   **Display Name:** Leather Tunic
 *   **Family ID:** `armor/families/medium_torso`
 *   **Category:** Medium
@@ -645,7 +645,7 @@ Families standardize armor visuals and baseline stat ratios per slot/weight.
 *   **Notes:** Basic starter leather armor.
 
 **6. Leather Boots**
-*   **ID:** `armor/medium/leather_legs`
+*   **ID:** `armor/medium/legs/leather_boots`
 *   **Display Name:** Leather Boots
 *   **Family ID:** `armor/families/medium_legs`
 *   **Category:** Medium
@@ -659,7 +659,7 @@ Families standardize armor visuals and baseline stat ratios per slot/weight.
 
 ### Light Set (Cloth)
 **7. Cloth Hood**
-*   **ID:** `armor/light/cloth_hood`
+*   **ID:** `armor/light/helmet/cloth_hood`
 *   **Display Name:** Cloth Hood
 *   **Family ID:** `armor/families/light_head`
 *   **Category:** Light
@@ -672,7 +672,7 @@ Families standardize armor visuals and baseline stat ratios per slot/weight.
 *   **Notes:** Basic starter hood with minor casting focus.
 
 **8. Cloth Robes**
-*   **ID:** `armor/light/cloth_robes`
+*   **ID:** `armor/light/torso/cloth_robes`
 *   **Display Name:** Cloth Robes
 *   **Family ID:** `armor/families/light_torso`
 *   **Category:** Light
@@ -685,7 +685,7 @@ Families standardize armor visuals and baseline stat ratios per slot/weight.
 *   **Notes:** Basic starter caster robes.
 
 **9. Cloth Pants**
-*   **ID:** `armor/light/cloth_pants`
+*   **ID:** `armor/light/legs/cloth_pants`
 *   **Display Name:** Cloth Pants
 *   **Family ID:** `armor/families/light_legs`
 *   **Category:** Light
@@ -738,3 +738,97 @@ Shields are a distinct equipment type using the `ArmorDef` schema.
 *   **Passive Effects:** None
 *   **Notes:** Basic starter shield for Warriors.
 
+
+## 5. Natural Weapons (v1)
+
+### Wolfkin Claws
+*   **Weapon:** `weapons/natural/claws/wolfkin_claws`
+*   **Name:** Wolfkin Claws
+*   **Family ID:** `weapons/families/natural/claws`
+*   **Damage Type Tag (v1):** Melee
+*   **Hands:** Natural
+*   **Range:** 2.0m
+*   **Scaling Profile:** DEX (Primary), STR (Secondary minor)
+*   **Base Damage (L1):** 3–5 Physical
+*   **On-Hit Extra Effect (v1 test):**
+    *   **Deal Damage:** Base_L1 1–2, Type: Nature
+    *   **Scaling:** uses the weapon scaling profile (DEX-forward)
+*   **Notes:**
+    *   Automatically equipped while `statuses/forms/wolfkin_form` is active.
+    *   On leaving Wolfkin Form, restore the previously equipped main weapon.
+    *   On-hit extra damage triggers on every WeaponStrike (Basic Attack and WeaponStrike effects inside abilities).
+    *   Multi-hit abilities trigger on-hit effects once per hit.
+
+### Fangs (Beast - Basic)
+*   **Weapon:** `weapons/natural/fangs/fangs`
+*   **Name:** Fangs
+*   **Family ID:** `weapons/families/natural/fangs`
+*   **Damage Type Tag (v1):** Melee
+*   **Hands:** Natural
+*   **Range:** 2.0m
+*   **Scaling Profile:** DEX (Primary), STR (Secondary minor)
+*   **Base Damage (L1):** 2–4 Physical
+*   **Notes:**
+    *   Default natural weapon for basic beast enemies (Cave Bat).
+    *   Used with `abilities/action/melee/bite`.
+
+### Fangs (Beast - Sharp)
+*   **Weapon:** `weapons/natural/fangs/fangs_sharp`
+*   **Name:** Sharp Fangs
+*   **Family ID:** `weapons/families/natural/fangs`
+*   **Damage Type Tag (v1):** Melee
+*   **Hands:** Natural
+*   **Range:** 2.0m
+*   **Scaling Profile:** DEX (Primary), STR (Secondary minor)
+*   **Base Damage (L1):** 3–5 Physical
+*   **Notes:**
+    *   Enhanced natural weapon for elite beasts (Vampire Bat).
+    *   Higher damage than basic fangs.
+
+---
+
+## 6. Enemy Weapons (v1)
+
+These weapons are used by starter enemies defined in `SonderQuest-Enemies-Framework.md`.
+
+### Rusty Shiv
+*   **Weapon:** `weapons/daggers/rusty_shiv`
+*   **Name:** Rusty Shiv
+*   **Family ID:** `weapons/families/dagger_1h`
+*   **Damage Type Tag (v1):** Melee
+*   **Hands:** One-Handed
+*   **Range:** 2.0m
+*   **Tier:** 0 (Below starter tier)
+*   **Scaling Profile:** DEX (Primary), STR (Secondary minor)
+*   **Base Damage (L1):** 2–3 Physical
+*   **Notes:**
+    *   Goblin Scout weapon.
+    *   Low damage, fast.
+
+### Gnarled Staff
+*   **Weapon:** `weapons/staves/gnarled_staff`
+*   **Name:** Gnarled Staff
+*   **Family ID:** `weapons/families/staff_2h`
+*   **Damage Type Tag (v1):** Melee
+*   **Hands:** Two-Handed
+*   **Range:** 2.5m
+*   **Tier:** 0 (Below starter tier)
+*   **Scaling Profile:** INT (Primary), WIL (Secondary minor)
+*   **Base Damage (L1):** 2–4 Physical
+*   **Notes:**
+    *   Goblin Shaman weapon.
+    *   Used for melee fallback; primary use is spell casting.
+
+### Ancient Blade
+*   **Weapon:** `weapons/swords/ancient_blade`
+*   **Name:** Ancient Blade
+*   **Family ID:** `weapons/families/sword_1h`
+*   **Damage Type Tag (v1):** Melee
+*   **Hands:** One-Handed
+*   **Range:** 2.0m
+*   **Tier:** 0 (Below starter tier)
+*   **Scaling Profile:** STR (Primary), DEX (Secondary minor)
+*   **Base Damage (L1):** 3–5 Physical
+*   **Notes:**
+    *   Skeleton Warrior weapon.
+    *   Corroded but still dangerous.

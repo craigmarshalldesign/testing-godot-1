@@ -960,3 +960,166 @@ Basic Attack always uses the unit’s current strike source. If a Main Weapon is
     *   Simple "hard hit" button for tanky melee enemies.
     *   **Scaling Notes:** WeaponStrike uses weapon scaling (not ability Damage Scaling). 125% multiplier applied after weapon-scaled roll.
 
+
+## 9. Ultimate Abilities (v1)
+
+### 30. Seismic Cleave
+*   **ID:** `abilities/ultimate/warrior/seismic_cleave`
+*   **Category:** Action Ability (Technique)
+*   **Context:** Combat Only
+*   **Phase:** Action Phase
+*   **Tags:** Melee, Physical, Area, Control, Ultimate, Warden
+*   **Learn Rules:**
+    *   **Default Learners (Starter):** Warrior
+    *   **Other Player Learners:** Not scroll-learnable in v1
+    *   **Enemy Use:** Not used by enemies in v1 (reserved as player identity button)
+*   **Requirements:** Main Weapon must be melee
+*   **Hit Check:** Accuracy vs Evasion (Weapon)
+*   **Targeting:** Enemy Unit, Range: Weapon Range, LOS: Yes
+*   **AoE Shape:** Cone (origin at caster, facing the targeted enemy)
+*   **AoE Size (v1):** Cone 110 degrees, Length 3.0
+*   **Cost:** 0 Mana, 0 Stamina
+*   **Ultimate Cost:** Consumes 100 Ultimate Charge
+*   **Cooldown:** 4 turns
+*   **Scaling Blocks:**
+    *   **Damage Scaling:** STR (Primary), DEX (Secondary minor)
+    *   **Effect Scaling:** STR (Primary), VIT (Secondary minor)
+*   **Effects:**
+    1.  **Weapon Strike:** 120% weapon damage to all enemies in cone
+    2.  **Apply Status:** `statuses/conditions/grounded`, Duration 3 turns
+*   **AI Hints:** Damage, Control
+*   **Notes:**
+    *   Weapon Strike uses the equipped weapon’s scaling profile (WeaponStrike rule).
+    *   Grounded is the payoff: deny movement first, then clean up with follow-up weapon techniques.
+
+### 31. Arcane Sigil
+*   **ID:** `abilities/ultimate/mage/arcane_sigil`
+*   **Category:** Action Ability (Spell)
+*   **Context:** Combat Only
+*   **Phase:** Action Phase
+*   **Tags:** Magic, Arcane, Zone, Damage, Ultimate, Conjuror
+*   **Learn Rules:**
+    *   **Default Learners (Starter):** Mage
+    *   **Other Player Learners:** Not scroll-learnable in v1
+    *   **Enemy Use:** Not used by enemies in v1 (reserved as player identity button)
+*   **Hit Check:** Auto-Hit (Magic Defense applies mitigation)
+*   **Targeting:** Ground Point, Range 8, LOS: Yes
+*   **AoE Shape:** Circle (Zone)
+*   **AoE Size (v1):** Radius 3.0
+*   **Cost:** 0 Mana, 0 Stamina
+*   **Ultimate Cost:** Consumes 100 Ultimate Charge
+*   **Cooldown:** 4 turns
+*   **Scaling Blocks:**
+    *   **Damage Scaling:** INT (Primary), WIL (Secondary minor)
+    *   **Effect Scaling:** INT (Primary), WIL (Secondary minor)
+*   **Effects:**
+    1. **Initial Blast:** Deal Arcane Damage (Base_L1: 10–14)
+    2. **Create Zone:** Arcane Sigil Zone, Duration 2 turns (snapshot scaling at cast)
+        * **Tick 1 (end of next turn):** Deal Arcane Damage (Base_L1: 6–8)
+        * **Tick 2 (end of following turn):** Deal Arcane Damage (Base_L1: 3–5)
+*   **AI Hints:** Damage, Zone
+*   **Notes:**
+    *   Zone damage uses the zone snapshot rule (scaling is captured at cast time).
+    *   This ultimate is intentionally element-neutral so it fits all Mage specialization themes.
+
+### 32. Shadowstep Barrage
+*   **ID:** `abilities/ultimate/thief/shadowstep_barrage`
+*   **Category:** Action Ability (Technique)
+*   **Context:** Combat Only
+*   **Phase:** Action Phase
+*   **Tags:** Melee, Shadow, Mobility, MultiHit, Damage, Ultimate, Assassin
+*   **Learn Rules:**
+    *   **Default Learners (Starter):** Thief
+    *   **Other Player Learners:** Not scroll-learnable in v1
+    *   **Enemy Use:** Not used by enemies in v1 (reserved as player identity button)
+*   **Requirements:** Main Weapon must be Dagger 1h (or unarmed fallback if unequipped)
+*   **Hit Check:** Accuracy vs Evasion (Weapon)
+*   **Targeting:** Enemy Unit, Range 6, Single Target, LOS: Yes
+*   **AoE Selection Rule:** Affected enemies are chosen from within **12m of the caster’s cast origin** (the thief never leaves this radius during the sequence)
+*   **Cost:** 0 Mana, 0 Stamina
+*   **Ultimate Cost:** Consumes 100 Ultimate Charge
+*   **Cooldown:** 4 turns
+*   **Scaling Blocks:**
+    *   **Damage Scaling:** INT (Primary)  (used by Shadow bonus damage)
+    *   **Effect Scaling:** None
+*   **Effects:**
+    1. **Multi-Strike Sequence (8 total strikes):**
+        * Determine the set **S** of enemies within **12m** of the caster’s cast origin.
+        * If **S** is empty, the ability fails (no valid targets in radius).
+        * Let **N = |S|**.
+        * The ability performs **8 strikes** total, distributing hits across enemies in **S** as evenly as possible:
+            * If **N >= 8:** strike **8 unique enemies**, prioritizing the **initial target first**, then the nearest remaining enemies to the caster’s cast origin, 1 hit each.
+            * If **N < 8:** every enemy in **S** is hit at least once, then remaining hits loop again in the same priority order until 8 hits are performed.
+            * Examples:
+                * **N = 1:** target is hit 8 times
+                * **N = 2:** each is hit 4 times
+                * **N = 3:** hits distribute 3, 3, 2 (initial target gets first extra hit)
+    2. **Per Strike Payload (applied each of the 8 times):**
+        * **Weapon Strike:** 65% weapon damage (WeaponStrike uses weapon scaling profile, expected DEX-forward for daggers)
+        * **Bonus Shadow Damage:** Deal Shadow Damage (Base_L1: 2–3), scales with **Damage Scaling (INT)**
+*   **AI Hints:** Damage, Finisher
+*   **Notes:**
+    *   The dash-behind behavior is visual and positional within the 12m constraint. It should not be treated as free traversal outside the cast origin radius.
+    *   The cast origin radius is locked at cast time (selection uses that origin as reference).
+
+### 33. Oathsplitter Verdict
+*   **ID:** `abilities/ultimate/hero/oathsplitter_verdict`
+*   **Category:** Action Ability (Weapon-Based)
+*   **Context:** Combat Only
+*   **Phase:** Action Phase
+*   **Tags:** Melee, Weapon, Shadow, Radiant, Finisher, Heal, Ultimate, Dreadbound, Lightbearer
+*   **Learn Rules:**
+    *   **Default Learners (Starter):** Hero
+    *   **Other Player Learners:** Not scroll-learnable in v1
+    *   **Enemy Use:** Not used by enemies in v1 (reserved as player identity button)
+*   **Requirements:** Main Weapon must be melee
+*   **Hit Check:** Accuracy vs Evasion (Weapon)
+*   **Targeting:** Enemy Unit, Range: Weapon Range, Single Target, LOS: Yes
+*   **AoE Shape:** Single
+*   **Cost:** 0 Mana
+*   **Stamina Cost:** 0
+*   **Ultimate Cost:** Consumes 100 Ultimate Charge
+*   **Cooldown:** 4 turns
+*   **Scaling Blocks:**
+    *   **Damage Scaling:** WIL (Primary), STR (Secondary minor)
+    *   **Effect Scaling:** WIL (Primary)
+*   **Effects:**
+    1. **Weapon Strike:** 120% weapon damage
+    2. **Deal Damage:** Base_L1 5–7, Type: Shadow (scales with Ability Damage Scaling: WIL)
+    3. **Conditional Radiant Burst:** If target is below 50% HP, deal Base_L1 10–14, Type: Radiant (scales with Ability Damage Scaling: WIL)
+    4. **Heal Self:** Heal the Hero for 25% of total damage actually dealt by this ability (all components)
+*   **AI Hints:** Finisher, Sustain
+*   **Notes:**
+    *   Hybrid damage: Weapon Strike uses weapon stats and weapon scaling; Shadow and Radiant components use Ability Damage Scaling.
+    *   The healing is based on damage that successfully applies after mitigation and barriers.
+
+### 34. Force of Nature
+*   **ID:** `abilities/ultimate/druid/force_of_nature`
+*   **Category:** Action Ability (Nature Support)
+*   **Context:** Combat Only
+*   **Phase:** Action Phase
+*   **Tags:** Magic, Nature, Support, Healing, Area, Damage, Ultimate, Lifewarden, Stormcaller
+*   **Learn Rules:**
+    *   **Default Learners (Starter):** Druid
+    *   **Other Player Learners:** Not scroll-learnable in v1
+    *   **Enemy Use:** Not used by enemies in v1 (reserved as player identity button)
+*   **Hit Check:** Auto-Hit (Magic Defense applies mitigation to enemy damage)
+*   **Targeting:** Ground Point, Range 8.0m, LOS: Yes
+*   **AoE Shape:** Radius (Sphere/Circle around target point)
+*   **AoE Size (v1):** Radius 4.0m
+*   **Cost:** 0 Mana
+*   **Stamina Cost:** 0
+*   **Ultimate Cost:** Consumes 100 Ultimate Charge
+*   **Cooldown:** 4 turns
+*   **Scaling Blocks:**
+    *   **Damage Scaling:** WIL (Primary), INT (Secondary minor)
+    *   **Effect Scaling:** WIL (Primary), CHA (Secondary minor)
+*   **Effects:**
+    1. **Heal Allies (Instant):** Base_L1 10–14 to all allies in radius (scales with Effect Scaling)
+    2. **Apply Status (Allies):** `statuses/buffs/regeneration`, Duration 2 turns, to all allies in radius
+        * **Regeneration Tick Value:** Base_L1: 5 per turn (scales with Effect Scaling)
+    3. **Deal Damage (Enemies):** Base_L1 6–9, Type: Nature to all enemies in radius (scales with Damage Scaling)
+*   **Form Rule:** If `statuses/forms/wolfkin_form` is active, it is removed when this ability is cast and the prior weapon is restored.
+*   **AI Hints:** Heal, Area, Stabilize
+*   **Notes:**
+    *   This ultimate is intentionally a “return to the grove” moment: it ends Wolfkin and restores the supportive caster identity.
