@@ -57,6 +57,7 @@ This section defines the 5 supported classes and their 3 Specialization themes.
 
 ### 1. Hero
 The adaptable protagonist archetype.
+*   **Armor Proficiency:** Medium, Light.
 *   **Blademaster:** Master of weapons and direct combat.
     *   *Themes:* Precision, stamina-driven offense, multi-hit.
     *   *Example:* **Cleave** (Wide swing hitting multiple enemies).
@@ -69,6 +70,7 @@ The adaptable protagonist archetype.
 
 ### 2. Warrior
 The durable frontliner.
+*   **Armor Proficiency:** Heavy, Medium, Light.
 *   **Berserker:** Blood-fueled destroyer trading safety for power.
     *   *Themes:* Self-damage, burst melee, stamina-heavy.
     *   *Example:* **Rage Strike** (Double hit, self-damage).
@@ -81,6 +83,7 @@ The durable frontliner.
 
 ### 3. Mage
 The arcane glass cannon.
+*   **Armor Proficiency:** Light only.
 *   **Pyromancer:** Destructive fire mage thriving on chaos.
     *   *Themes:* Fire damage, burn stacking, crit synergy.
     *   *Example:* **Firebolt** (Damage + Burn tick).
@@ -93,6 +96,7 @@ The arcane glass cannon.
 
 ### 4. Thief
 The tactical infiltrator and striker.
+*   **Armor Proficiency:** Medium, Light.
 *   **Assassin:** Lethal close-range killer.
     *   *Themes:* Backstabs, burst damage, positioning.
     *   *Example:* **Backstab** (Teleport rear + bonus damage).
@@ -105,6 +109,7 @@ The tactical infiltrator and striker.
 
 ### 5. Druid
 The nature-based controller and shapeshifter.
+*   **Armor Proficiency:** Light only.
 *   **Beastkin:** Primal shapeshifter and predator.
     *   *Themes:* Form-swapping, high mobility, melee.
     *   *Example:* **Wolfkin Form** (Leap + transform).

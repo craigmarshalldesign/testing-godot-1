@@ -72,7 +72,7 @@ Determines potency of non-damage effects (Fear duration, Stun chance, Debuff mag
 > **Crucial Note:** Derived values below originate from attributes but are not locked to them. All resources and regen values are first-class stats that can be modified directly by gear, talents, buffs, and zones.
 
 ### Resources & Regen
-All characters share the same resource pools. Regeneration occurs at the **End of Turn**.
+All characters share the same resource pools. Regeneration occurs at the **Start of Turn**.
 *   **Max HP**: `Baseline + (VIT * HP_PER_VIT)`.
 *   **Max Mana**: `Baseline + (INT * MANA_PER_INT)`.
     *   **Mana Regen:** `BaseRegen + (WIL * MANA_REGEN_PER_WIL)`.
@@ -124,7 +124,7 @@ At the start of each affected turn, the target rolls a **Break Check**.
 *   **Phased:** Effects tick at the **Start of Turn**.
 *   **Clamping:** Minimum (1) and Maximum (3-5) duration turns are defined in data.
 *   **No Level Scaling:** Status duration and potency (e.g. Stun length) do **not** scale with character level in v1. They are fixed constants defined in the status. Damage-over-time effects scale via their distinct `DealDamage` tick effects using the Power Curve.
-*   **Break Checks:** End of Turn roll to remove status early.
+*   **Break Checks:** Start of Turn roll to remove status early.
 
 *Example:* A weak 'Burn' might be extinguished by a high-WIL character after 1 turn, while a robust 'Root' might persist for the full maximum duration against a low-WIL target.
 

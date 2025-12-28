@@ -94,3 +94,25 @@ Defines how Attributes increase the damage of this specific weapon.
 *   **Base Range:** 5–8 Damage (Melee strike).
 *   **Scaling:** INT (Primary), WIL (Secondary).
 *   **Stats:** Init -1.
+
+---
+
+## 5. Armor & Shield Schema
+
+Armor and Shields use a separate definition schema focused on Mitigation and Stat Bonuses rather than damaging strikes.
+
+### A. ArmorDef Fields
+*   **Family:** Reference to `ArmorFamilyDef` (Standardizes Slot + Category).
+*   **Slot:** `Head`, `Torso`, `Legs`, or `Shield`.
+*   **Category:** `Light`, `Medium`, `Heavy`, `Shield`.
+*   **Defense:** Integer. Flat Physical Damage reduction.
+*   **Magic Defense:** Integer. Flat Magical Damage reduction.
+*   **Stat Bonuses:** Dictionary of additive attribute bonuses (e.g., `STR: 2`).
+*   **Passive Effects:** List of effects applied while equipped (e.g., "Regen 1 HP/Turn").
+*   **Weight Class:** Affects class proficiency checks.
+
+### B. Shield Rules
+*   Shields are technically `ArmorDef` resources but occupy the unique `Shield` slot.
+*   **Requirement:** Can only be equipped if the Main Weapon is **One-Handed**.
+*   **Mitigation:** Shield Defense is added to the character's Total Defense alongside armor pieces.
+*   **Block mechanics:** Handled via Active Abilities (e.g., "Shield Block") or Passive Effects, not inherent generic block chance in v1.

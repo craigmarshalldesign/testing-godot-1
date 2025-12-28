@@ -99,7 +99,12 @@ Classes offer different **ClassGrowth** layers, talent trees, and unique explora
 *   **Scrolls:** Grant ability unlocks with class/stat/talent-point requirements, acting as utility or side-grades.
 *   **Resets:** Players can reset their talents whenever they please (available at Hub/Camp).
 
-### B. Launch Classes
+### B. Equipment Slots (v1)
+*   **Main Weapon:** Any Weapon Family.
+*   **Shield:** Off-hand slot. Requires One-Handed Main Weapon.
+*   **Armor Slots:** Head, Torso, Legs. Classes define proficiency (Light/Medium/Heavy).
+
+### C. Launch Classes
 
 | Class | Role Focus | Resources | Key Exploration Abilities | Ultimate | Passives |
 | :--- | :--- | :--- | :--- | :--- | :--- |

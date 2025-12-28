@@ -67,7 +67,7 @@ Weapon Families standardize animations, hand usage, and baseline scaling profile
 *   **Default Scaling Profile:**
     *   **Primary:** DEX
     *   **Secondary:** STR (minor)
-*   **Notes:** Natural slashing strikes, often used by predators.
+*   **Notes:** Natural melee strikes, often used by predators.
 *   **Default Animation Set:** TBD (claw swipe set)
 *   **Default Strike Behavior:** Single-target weapon strike (used by Basic Attack and claw-based abilities)
 *   **Intended Users:** Beast enemies, shapeshift forms, special units with claw attacks
@@ -268,7 +268,7 @@ Individual weapon items players and enemies can equip.
 *   **Requirements:** None
 *   **Notes:**
     *   Used by Skeleton Warrior.
-    *   Tagged with Crush to support heavier-feeling impact without adding new systems.
+    *   Heavier-feeling impact without adding new systems.
 
 ### Daggers
 
@@ -464,3 +464,277 @@ Individual weapon items players and enemies can equip.
 *   **Notes:**
     *   Placeholder natural weapon for claw-based enemies and potential future Beastkin variants.
     *   If later you want claw attacks to have a wider hit shape, do that via abilities, not the weapon entry.
+
+---
+
+## 4. Armor Framework v1
+
+Armor in v1 is defined as equipment occupying three specific slots. It provides passive stats (primarily Defense) and visual appearance.
+
+### Slots
+1.  **Head:** Helmets, Hoods, Circlets.
+2.  **Torso:** Chestplates, Robes, Tunics.
+3.  **Legs:** Greaves, Pants, Skirts.
+
+### Categories
+*   **Light:** Cloth/Silk. Intended for casters or stealth units. Minimal weight/movement penalties (placeholder).
+*   **Medium:** Leather/Chain. Generalist protection. Balanced stats.
+*   **Heavy:** Plate/Scale. Frontline protection. High defense, potential movement/initiative penalties (placeholder).
+
+### Equipping Rules
+Classes define their **Highest Armor Proficiency**. They can equip that category and anything lighter.
+*   **Heavy Classes (Warrior):** Can equip Heavy, Medium, Light.
+*   **Medium Classes (Thief, Hero):** Can equip Medium, Light.
+*   **Light Classes (Mage, Druid):** Can equip Light only.
+
+### Stat Placeholders (v1)
+*   **Defense:** Physical damage reduction.
+*   **Magic Defense:** Magical damage reduction.
+*   **Weight:** Placeholder for future movement logic.
+
+---
+
+## 5. Armor Families (v1)
+
+Families standardize armor visuals and baseline stat ratios per slot/weight.
+
+### Light Armor Families
+**1. Light Head**
+*   **ID:** `armor/families/light_head`
+*   **Display Name:** Light Headgear
+*   **Category:** Light
+*   **Slot:** Head
+*   **Default Stats:** Low Defense, Moderate Magic Defense.
+*   **Notes:** Hoods, hats, bands.
+
+**2. Light Torso**
+*   **ID:** `armor/families/light_torso`
+*   **Display Name:** Light Body
+*   **Category:** Light
+*   **Slot:** Torso
+*   **Default Stats:** Low Defense, High Magic Defense.
+*   **Notes:** Robes, tunics.
+
+**3. Light Legs**
+*   **ID:** `armor/families/light_legs`
+*   **Display Name:** Light Legwear
+*   **Category:** Light
+*   **Slot:** Legs
+*   **Default Stats:** Low Defense, Moderate Magic Defense.
+*   **Notes:** Pants, sandals.
+
+### Medium Armor Families
+**4. Medium Head**
+*   **ID:** `armor/families/medium_head`
+*   **Display Name:** Medium Headgear
+*   **Category:** Medium
+*   **Slot:** Head
+*   **Default Stats:** Medium Defense, Low Magic Defense.
+*   **Notes:** Leather caps, chain coifs.
+
+**5. Medium Torso**
+*   **ID:** `armor/families/medium_torso`
+*   **Display Name:** Medium Body
+*   **Category:** Medium
+*   **Slot:** Torso
+*   **Default Stats:** Medium Defense, Low Magic Defense.
+*   **Notes:** Leather jerkins, chainmail.
+
+**6. Medium Legs**
+*   **ID:** `armor/families/medium_legs`
+*   **Display Name:** Medium Legwear
+*   **Category:** Medium
+*   **Slot:** Legs
+*   **Default Stats:** Medium Defense, Low Magic Defense.
+*   **Notes:** Leather boots, chain leggings.
+
+### Heavy Armor Families
+**7. Heavy Head**
+*   **ID:** `armor/families/heavy_head`
+*   **Display Name:** Heavy Headgear
+*   **Category:** Heavy
+*   **Slot:** Head
+*   **Default Stats:** High Defense, No Magic Defense.
+*   **Notes:** Full helms, visors.
+
+**8. Heavy Torso**
+*   **ID:** `armor/families/heavy_torso`
+*   **Display Name:** Heavy Body
+*   **Category:** Heavy
+*   **Slot:** Torso
+*   **Default Stats:** High Defense, No Magic Defense.
+*   **Notes:** Plate breastplates.
+
+**9. Heavy Legs**
+*   **ID:** `armor/families/heavy_legs`
+*   **Display Name:** Heavy Legwear
+*   **Category:** Heavy
+*   **Slot:** Legs
+*   **Default Stats:** High Defense, No Magic Defense.
+*   **Notes:** Sabatons, greaves.
+
+---
+
+## 6. Starter Armor Items (v1)
+
+### Heavy Set (Bronze)
+**1. Bronze Helmet**
+*   **ID:** `armor/heavy/bronze_helmet`
+*   **Display Name:** Bronze Helmet
+*   **Family ID:** `armor/families/heavy_head`
+*   **Category:** Heavy
+*   **Slot:** Head
+*   **Tier:** 1
+*   **Defense:** 3
+*   **Magic Defense:** 0
+*   **Stat Bonuses:** None
+*   **Passive Effects:** None
+*   **Notes:** Basic starter helm for heavy users.
+
+**2. Bronze Breastplate**
+*   **ID:** `armor/heavy/bronze_torso`
+*   **Display Name:** Bronze Breastplate
+*   **Family ID:** `armor/families/heavy_torso`
+*   **Category:** Heavy
+*   **Slot:** Torso
+*   **Tier:** 1
+*   **Defense:** 6
+*   **Magic Defense:** 1
+*   **Stat Bonuses:** None
+*   **Passive Effects:** None
+*   **Notes:** Basic starter plate.
+
+**3. Bronze Greaves**
+*   **ID:** `armor/heavy/bronze_legs`
+*   **Display Name:** Bronze Greaves
+*   **Family ID:** `armor/families/heavy_legs`
+*   **Category:** Heavy
+*   **Slot:** Legs
+*   **Tier:** 1
+*   **Defense:** 4
+*   **Magic Defense:** 0
+*   **Stat Bonuses:** None
+*   **Passive Effects:** None
+*   **Notes:** Basic starter leg protection.
+
+### Medium Set (Leather)
+**4. Leather Helmet**
+*   **ID:** `armor/medium/leather_helmet`
+*   **Display Name:** Leather Cap
+*   **Family ID:** `armor/families/medium_head`
+*   **Category:** Medium
+*   **Slot:** Head
+*   **Tier:** 1
+*   **Defense:** 2
+*   **Magic Defense:** 1
+*   **Stat Bonuses:** None
+*   **Passive Effects:** None
+*   **Notes:** Basic starter cap.
+
+**5. Leather Tunic**
+*   **ID:** `armor/medium/leather_torso`
+*   **Display Name:** Leather Tunic
+*   **Family ID:** `armor/families/medium_torso`
+*   **Category:** Medium
+*   **Slot:** Torso
+*   **Tier:** 1
+*   **Defense:** 4
+*   **Magic Defense:** 2
+*   **Stat Bonuses:** None
+*   **Passive Effects:** None
+*   **Notes:** Basic starter leather armor.
+
+**6. Leather Boots**
+*   **ID:** `armor/medium/leather_legs`
+*   **Display Name:** Leather Boots
+*   **Family ID:** `armor/families/medium_legs`
+*   **Category:** Medium
+*   **Slot:** Legs
+*   **Tier:** 1
+*   **Defense:** 2
+*   **Magic Defense:** 1
+*   **Stat Bonuses:** None
+*   **Passive Effects:** None
+*   **Notes:** Basic starter boots.
+
+### Light Set (Cloth)
+**7. Cloth Hood**
+*   **ID:** `armor/light/cloth_hood`
+*   **Display Name:** Cloth Hood
+*   **Family ID:** `armor/families/light_head`
+*   **Category:** Light
+*   **Slot:** Head
+*   **Tier:** 1
+*   **Defense:** 1
+*   **Magic Defense:** 2
+*   **Stat Bonuses:** None
+*   **Passive Effects:** None
+*   **Notes:** Basic starter hood with minor casting focus.
+
+**8. Cloth Robes**
+*   **ID:** `armor/light/cloth_robes`
+*   **Display Name:** Cloth Robes
+*   **Family ID:** `armor/families/light_torso`
+*   **Category:** Light
+*   **Slot:** Torso
+*   **Tier:** 1
+*   **Defense:** 2
+*   **Magic Defense:** 4
+*   **Stat Bonuses:** None
+*   **Passive Effects:** None
+*   **Notes:** Basic starter caster robes.
+
+**9. Cloth Pants**
+*   **ID:** `armor/light/cloth_pants`
+*   **Display Name:** Cloth Pants
+*   **Family ID:** `armor/families/light_legs`
+*   **Category:** Light
+*   **Slot:** Legs
+*   **Tier:** 1
+*   **Defense:** 1
+*   **Magic Defense:** 2
+*   **Stat Bonuses:** None
+*   **Passive Effects:** None
+*   **Notes:** Basic starter pants.
+
+---
+
+## 7. Shields Framework (v1)
+
+Shields are a distinct equipment type using the `ArmorDef` schema.
+
+*   **Slot:** Shield (Off-hand).
+*   **Requirement:** Can only be equipped if the Main Weapon is **One-Handed**.
+*   **Function:** Provides significant Defense and Magic Defense stats.
+*   **Damage:** Shields do **not** have weapon damage tags or scaling profiles in v1. They are defensive tools.
+
+---
+
+## 8. Shield Families (v1)
+
+**1. Standard Shield**
+*   **ID:** `shields/families/shield_1h`
+*   **Display Name:** Standard Shield
+*   **Category:** Shield
+*   **Slot:** Shield
+*   **Requirement:** One-Handed Main Weapon
+*   **Default Stats:** High Defense, Moderate Magic Defense.
+*   **Notes:** The baseline family for all heater/round shields in v1.
+
+---
+
+## 9. Starter Shields (v1)
+
+**1. Bronze Shield**
+*   **ID:** `shields/shield_1h/bronze_shield`
+*   **Display Name:** Bronze Shield
+*   **Family ID:** `shields/families/shield_1h`
+*   **Category:** Shield
+*   **Slot:** Shield
+*   **Tier:** 1
+*   **Defense:** 4
+*   **Magic Defense:** 2
+*   **Stat Bonuses:** None
+*   **Passive Effects:** None
+*   **Notes:** Basic starter shield for Warriors.
+

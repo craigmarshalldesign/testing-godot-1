@@ -180,13 +180,12 @@ When authoring `AbilityDef` resources in the sections below, every entry MUST sp
 *   **Effects:**
     1.  **Weapon Strike:** 100% weapon damage to the target
 *   **Damage Category and Type:**
-    *   Determined by strike source (Physical/Magical, Melee/Ranged, Slash/Pierce/Bludgeon).
+    *   Determined by strike source (Physical/Magical, Melee/Ranged, Crush/Bleed).
 *   **AI Hints:** Damage
 *   **Notes:**
     *   Default fallback action. On-hit statuses from weapons are ignored in v1.
 
-**Strike Source & Scaling Rule:**
-Basic Attack always uses the unit’s current strike source. If a Main Weapon is equipped, Basic Attack uses that weapon’s damage range, range (melee reach in meters or ranged max distance), and damage tags. If no Main Weapon is equipped, Basic Attack uses the Unarmed strike profile, unless the unit has a Natural Weapon assigned (fangs/claws) in which case the Natural Weapon becomes the strike source. The strike source defines the damage category and type tags used for combat rules: most weapons are Physical with tags like Melee or Ranged plus a subtype tag such as Slash, Pierce, or Bludgeon; a staff can be treated as a weapon strike source that is still Physical by default unless the weapon explicitly marks itself as Magical-strike. Scaling for Basic Attack is driven by the strike source’s scaling profile: melee weapons typically weight STR primary with DEX secondary, ranged weapons typically weight DEX primary with STR secondary, and staves typically weight INT primary with WIL secondary. Initiative modifiers, accuracy modifiers, and any other weapon-defined modifiers apply to Basic Attack exactly as listed on the weapon.
+Basic Attack always uses the unit’s current strike source. If a Main Weapon is equipped, Basic Attack uses that weapon’s damage range, range (melee reach in meters or ranged max distance), and damage tags. If no Main Weapon is equipped, Basic Attack uses the Unarmed strike profile, unless the unit has a Natural Weapon assigned (fangs/claws) in which case the Natural Weapon becomes the strike source. The strike source defines the damage category and type tags used for combat rules: most weapons are Physical with tags like Melee or Ranged; a staff can be treated as a weapon strike source that is still Physical by default unless the weapon explicitly marks itself as Magical-strike. Scaling for Basic Attack is driven by the strike source’s scaling profile: melee weapons typically weight STR primary with DEX secondary, ranged weapons typically weight DEX primary with STR secondary, and staves typically weight INT primary with WIL secondary. Initiative modifiers, accuracy modifiers, and any other weapon-defined modifiers apply to Basic Attack exactly as listed on the weapon.
 
 ---
 

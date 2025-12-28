@@ -33,6 +33,8 @@ All gameplay data resides in `res://data/`. The system uses **String IDs** match
 | :--- | :--- | :--- |
 | `res://data/abilities/` | `abilities/` | `AbilityDef` |
 | `res://data/weapons/` | `weapons/` | `WeaponDef` |
+| `res://data/armor/` | `armor/` | `ArmorDef` |
+| `res://data/shields/` | `shields/` | `ArmorDef` |
 | `res://data/layers/` | `layers/` | `StatLayerDef` |
 | `res://data/units/` | `units/` | `UnitArchetypeDef` |
 | `res://data/statuses/` | `statuses/` | `StatusDef` |
@@ -135,6 +137,23 @@ These definitions map directly to `Resource` scripts in Godot.
     *   `initiative_mod`: Int
     *   `accuracy_mod`: Float
     *   `on_hit_effects`: Array[`EffectDef`]
+
+### K. ArmorDef & ArmorFamilyDef
+*   **ArmorFamilyDef:**
+    *   `id`: String
+    *   `slot`: Enum (Head, Torso, Legs, Shield)
+    *   `category`: Enum (Light, Medium, Heavy, Shield)
+    *   `anim_set_ref`: String
+*   **ArmorDef:**
+    *   `id`: String
+    *   `family`: `ArmorFamilyDef` reference
+    *   `display_name`: String
+    *   `tier`: Int
+    *   `defense`: Int (Physical Mitigation)
+    *   `magic_defense`: Int (Magical Mitigation)
+    *   `stat_bonuses`: Dictionary (AttributeID -> Value) (e.g. {STR: 1})
+    *   `passive_effects`: Array[`EffectDef`]
+    *   `weight_class`: Enum (Light, Medium, Heavy)
 
 ### E. StatusDef
 *   **Purpose:** Temporary conditions.
