@@ -66,14 +66,14 @@ Defines how Attributes increase the damage of this specific weapon.
 ## 4. Examples
 
 **1. Bronze Sword**
-*   **Family:** Sword (One-Handed).
+*   **Family:** Sword (One-Handed) [`weapons/families/sword_1h`]
 *   **Damage:** Physical / Melee.
 *   **Base Range:** 6–9 Damage.
 *   **Scaling:** STR (Primary), DEX (Secondary).
 *   **Stats:** Accuracy +0%, Init +0.
 
 **2. Iron Dagger**
-*   **Family:** Dagger (One-Handed).
+*   **Family:** Dagger (One-Handed) [`weapons/families/dagger_1h`]
 *   **Damage:** Physical / Melee.
 *   **Base Range:** 4–7 Damage.
 *   **Scaling:** DEX (Primary), STR (Secondary).
@@ -81,7 +81,7 @@ Defines how Attributes increase the damage of this specific weapon.
 *   **On-Hit:** 10% Chance to apply Bleed.
 
 **3. Simple Bow**
-*   **Family:** Bow (Two-Handed).
+*   **Family:** Bow (Two-Handed) [`weapons/families/bow_2h`]
 *   **Damage:** Physical / Ranged.
 *   **Range:** 12 meters.
 *   **Base Range:** 8–11 Damage.
@@ -89,7 +89,7 @@ Defines how Attributes increase the damage of this specific weapon.
 *   **Stats:** Accuracy +0%, Init +0.
 
 **4. Oak Staff**
-*   **Family:** Staff (Two-Handed).
+*   **Family:** Staff (Two-Handed) [`weapons/families/staff_2h`]
 *   **Damage:** Physical / Melee (Strike) or Magical (Cast).
 *   **Base Range:** 5–8 Damage (Melee strike).
 *   **Scaling:** INT (Primary), WIL (Secondary).

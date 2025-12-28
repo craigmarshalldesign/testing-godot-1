@@ -109,7 +109,7 @@ The tactical infiltrator and striker.
 
 ### 5. Druid
 The nature-based controller and shapeshifter.
-*   **Armor Proficiency:** Light only.
+*   **Armor Proficiency:** Medium, Light.
 *   **Beastkin:** Primal shapeshifter and predator.
     *   *Themes:* Form-swapping, high mobility, melee.
     *   *Example:* **Wolfkin Form** (Leap + transform).

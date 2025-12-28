@@ -57,6 +57,9 @@ All gameplay data resides in `res://data/`. The system uses **String IDs** match
 *   `units/enemies/goblin_scout`
 *   `statuses/conditions/burning`
 *   `statuses/conditions/taunted`
+*   `statuses/conditions/wet`
+*   `statuses/conditions/chilled`
+*   `statuses/conditions/blinded`
 *   `ai/behaviors/aggressive_melee`
 
 **Constraint:** Action abilities should use functional categories (`magic`, `melee`, `support`). Utility abilities generally use class folders (`utility/mage`, `utility/warrior`) or functional folders (`utility/mobility`) depending on implementation preference, but Starter List currently uses functional subfolders for Action and Class folders for Utility.
@@ -81,12 +84,9 @@ These definitions map directly to `Resource` scripts in Godot.
     *   `cooldown_turns`: Int (Default 0)
     *   `targeting`: `AbilityTargetingDef` (Required)
     *   `effects`: Array[`EffectDef`] (Required, ordered)
-    *   `scaling_damage`: `ScalingBlock` (Primary/Secondary stats + weights)
-    *   `scaling_effect`: `ScalingBlock`
+    *   `effects`: Array[`EffectDef`] (Required, ordered)
     *   `ai_hints`: `AIAbilityHint` (Usage tags)
     *   `requirements`: Array[`UseRequirement`] (WeaponType, Stance)
-
-> **Note:** `scaling_level_growth` is deliberately removed. In v1, the runtime does NOT evaluate `scaling_damage` or `scaling_effect`. These fields remain only for metadata, UI, or future extension.
 
 ### B. AbilityTargetingDef
 *   **Purpose:** Nested resource defining selection logic.
@@ -108,8 +108,8 @@ These definitions map directly to `Resource` scripts in Godot.
 *   **Base Class:** `EffectDef` (Abstract)
 *   **Subtypes:**
     *   `EffectWeaponStrike`: uses equipped weapon stats.
-    *   `EffectDealDamage`: `base_min_l1`, `base_max_l1`, `power_attribute_weights` (Dictionary).
-    *   `EffectHeal`: `base_min_l1`, `base_max_l1`, `power_attribute_weights`.
+    *   `EffectDealDamage`: `base_min_l1`, `base_max_l1`, `scaling_weights` (Dictionary of Attribute->Weight).
+    *   `EffectHeal`: `base_min_l1`, `base_max_l1`, `scaling_weights` (Dictionary of Attribute->Weight).
     *   `EffectApplyStatus`: `status_id`, `duration_min`, `duration_max`.
     *   `EffectModifyStat`: `stat_id`, `amount`, `duration`.
     *   `EffectMove`: `type` (Push, Pull, Dash, Teleport), `distance`.
