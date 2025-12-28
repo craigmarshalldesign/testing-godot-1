@@ -106,7 +106,7 @@ Enemies use the exact same Ability definitions as players.
     *   Control effects (Stun, Root) should be used sparingly to avoid frustrating lock-loops.
 
 *   **Status Duration Logic:**
-    *   Enemy-applied statuses use the exact same logic as players: **Min/Max Turns** based on strength vs resistance, subject to per-turn **Break Checks**. No artificial "Boss Immunity" mechanics in v1.
+    *   Enemy-applied statuses use the exact same logic as players: **Min/Max Turns** based on StatusPower vs StatusResist, subject to per-turn **Break Checks**. No artificial "Boss Immunity" mechanics in v1.
 
 ---
 

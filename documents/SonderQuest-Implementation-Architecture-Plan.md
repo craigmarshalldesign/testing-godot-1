@@ -84,9 +84,12 @@ These definitions map directly to `Resource` scripts in Godot.
     *   `cooldown_turns`: Int (Default 0)
     *   `targeting`: `AbilityTargetingDef` (Required)
     *   `effects`: Array[`EffectDef`] (Required, ordered)
-    *   `effects`: Array[`EffectDef`] (Required, ordered)
+    *   `scaling_damage`: `ScalingBlock` (Optional. Default Damage Scaling inherited by damage effects.)
+    *   `scaling_effect`: `ScalingBlock` (Optional. Default Effect Scaling inherited by heals/status effects.)
     *   `ai_hints`: `AIAbilityHint` (Usage tags)
     *   `requirements`: Array[`UseRequirement`] (WeaponType, Stance)
+
+> **Scaling Inheritance:** The `scaling_damage` and `scaling_effect` fields are defaults. Numeric effects inherit from these unless they define their own `scaling_weights` override. See `SonderQuest-Abilities.md` Scaling Conventions for full rules.
 
 ### B. AbilityTargetingDef
 *   **Purpose:** Nested resource defining selection logic.
@@ -107,16 +110,17 @@ These definitions map directly to `Resource` scripts in Godot.
 *   **Purpose:** Atomic logic step in an ability.
 *   **Base Class:** `EffectDef` (Abstract)
 *   **Subtypes:**
-    *   `EffectWeaponStrike`: uses equipped weapon stats.
-    *   `EffectDealDamage`: `base_min_l1`, `base_max_l1`, `scaling_weights` (Dictionary of Attribute->Weight).
-    *   `EffectHeal`: `base_min_l1`, `base_max_l1`, `scaling_weights` (Dictionary of Attribute->Weight).
-    *   `EffectApplyStatus`: `status_id`, `duration_min`, `duration_max`.
+    *   `EffectWeaponStrike`: Uses equipped weapon's base and scaling profile. Does NOT inherit ability `scaling_damage`. Accepts optional `damage_multiplier` (e.g., 1.25 for 125% weapon damage).
+    *   `EffectDealDamage`: `base_min_l1`, `base_max_l1`. Optional `scaling_weights` (override). If omitted, inherits ability's `scaling_damage`.
+    *   `EffectHeal`: `base_min_l1`, `base_max_l1`. Optional `scaling_weights` (override). If omitted, inherits ability's `scaling_effect`.
+    *   `EffectApplyStatus`: `status_id`, `duration_min`, `duration_max`. StatusPower derived from ability's `scaling_effect`.
     *   `EffectModifyStat`: `stat_id`, `amount`, `duration`.
     *   `EffectMove`: `type` (Push, Pull, Dash, Teleport), `distance`.
-    *   `EffectSpawnZone`: `zone_def`, `duration`.
+    *   `EffectSpawnZone`: `zone_def`, `duration`. Zone ticks snapshot caster's scaling at cast time.
     *   `EffectEnvironment`: `tag` (Smash, Interact).
 
-> **Numeric Scaling Logic:** For `DealDamage` and `Heal` (Spells/Monster Moves), the runner calculates: `(Base_L1 * PowerCurve(lvl)) + (Attributes * Weights)`.
+> **Per-Effect Override:** Any effect with numeric output may include `scaling_weights` and `scaling_coefficient` to override inherited defaults.
+> **Numeric Scaling Logic:** For `DealDamage` and `Heal`, the runner calculates: `(Base_L1 * PowerCurve(lvl)) + (Attributes * Weights)`.
 > **Status Logic:** Status effects (stun, root, silence) do NOT scale in potency or duration based on level in v1. Damage-over-time scales via its own tick effects.
 
 ### D. WeaponDef & WeaponFamilyDef

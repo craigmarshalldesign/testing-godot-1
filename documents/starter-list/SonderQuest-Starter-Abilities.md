@@ -324,6 +324,7 @@ Basic Attack always uses the unit’s current strike source. If a Main Weapon is
 *   **Notes:**
     *   The self-damage is a direct effect, not a status.
     *   Multi-hit exists to validate sequencing, hit rolls, and future on-hit hooks.
+    *   **Scaling Notes:** WeaponStrike effects use weapon scaling. Damage Scaling (STR) applies only to the self-damage DealDamage effect.
 
 ### 7. Ground Stomp
 *   **ID:** `abilities/action/melee/ground_stomp`
@@ -878,6 +879,7 @@ Basic Attack always uses the unit’s current strike source. If a Main Weapon is
 *   **AI Hints:** Damage, Debuff
 *   **Notes:**
     *   Makes the scout feel threatening without complex movement.
+    *   **Scaling Notes:** Direct hit inherits Damage Scaling. Poison tick inherits Damage Scaling (coefficient 0.5 implied by lower base).
 
 ### 27. Minor Heal
 *   **ID:** `abilities/action/support/minor_heal`
@@ -930,6 +932,7 @@ Basic Attack always uses the unit’s current strike source. If a Main Weapon is
 *   **Notes:**
     *   Core "persistent zone test" ability.
     *   No automatic Burning unless added later.
+    *   **Scaling Notes:** Zone snapshots caster's Damage Scaling at cast time. Tick damage inherits snapshotted scaling.
 
 ### 29. Heavy Swing
 *   **ID:** `abilities/action/melee/heavy_swing`
@@ -955,4 +958,5 @@ Basic Attack always uses the unit’s current strike source. If a Main Weapon is
 *   **AI Hints:** Damage
 *   **Notes:**
     *   Simple "hard hit" button for tanky melee enemies.
+    *   **Scaling Notes:** WeaponStrike uses weapon scaling (not ability Damage Scaling). 125% multiplier applied after weapon-scaled roll.
 

@@ -51,19 +51,26 @@ Weapons define a primary attribute and an optional secondary attribute.
 *   **Staff:** `INT (Primary) + WIL (Secondary)`
 
 ### B. Ability Scaling Blocks
-Abilities have two independent scaling components.
+Abilities have two independent scaling components that numeric effects inherit by default.
 
-**1. Damage/Healing Scaling**
-Determines the raw output numbers.
+**1. Damage Scaling**
+Determines the raw output numbers for damage effects.
 *   *Mage Fireball:* `INT (Primary)`
 *   *Warrior Cleave:* `STR (Primary) + DEX (Secondary)`
-*   *Druid Heal:* `WIL (Primary) + INT (Secondary)`
+*   *Druid Heal:* `WIL (Primary) + INT (Secondary)` (Note: Heals use Effect Scaling, not Damage Scaling.)
 
 **2. Effect Scaling**
-Determines potency of non-damage effects (Fear duration, Stun chance, Debuff magnitude). This allows "Non-Magic" stats to scale utility.
+Determines potency of non-damage effects (Fear duration, Stun chance, Debuff magnitude, Healing output, Status application power). This allows "Non-Magic" stats to scale utility.
 *   *Warrior Fear Shout:* `CHA (Primary) + WIL (Secondary)` (Scales fear intensity).
 *   *Rogue Blind:* `DEX (Primary) + INT (Secondary)` (Scales blind duration).
 *   *Druid Roots:* `WIL (Primary)` (Scales root health/duration).
+
+**Multi-Effect Abilities:**
+Abilities can contain multiple effects. Each effect inherits the appropriate scaling block, or can override it.
+*   *Example (Dirty Stab):* Direct hit inherits Damage Scaling. Poison DoT tick inherits Damage Scaling at 0.5 coefficient.
+*   *Example (Charged Strike):* WeaponStrike uses weapon scaling (not ability Damage Scaling). Bonus Lightning DealDamage inherits ability Damage Scaling.
+
+See `SonderQuest-Abilities.md` Scaling Conventions section for complete inheritance and override rules.
 
 ---
 

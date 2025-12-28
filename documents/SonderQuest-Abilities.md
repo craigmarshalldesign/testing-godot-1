@@ -83,17 +83,84 @@ The following fields characterize an Ability definition.
 ### F. Scaling Blocks
 Matching the `SonderQuest-Stats.md` definitions:
 > **Note:** Numeric level scaling for Damage/Healing is handled automatically by the **Power Curve** on `EffectDef`. It is not defined here.
-*   **Damage/Healing Scaling:** Primary Attribute + Optional Secondary Attribute (and weights). Used for calculating raw output numbers.
-*   **Effect Scaling:** Primary Attribute + Optional Secondary Attribute. Used for calculating Status Strength (vs Resistance) and utility potency. Status duration does NOT scale with level.
+*   **Damage Scaling:** Primary Attribute + Optional Secondary Attribute (and weights). Used for calculating raw damage output numbers.
+*   **Effect Scaling:** Primary Attribute + Optional Secondary Attribute. Used for calculating healing, StatusPower (vs StatusResist), and utility potency. Status duration does NOT scale with level.
+
+---
+
+## Scaling Conventions (v1)
+
+This section is the **single source of truth** for how attribute scaling works across all abilities. All other docs should align with these rules.
+
+### A. Definitions
+
+**Scaling Profile:** A small block describing how attributes contribute to a numeric effect.
+*   **Primary Attribute:** The main stat driving the output (e.g., STR, INT).
+*   **Secondary Attribute (Optional):** A support stat providing a minor contribution.
+*   **Weights:** Multipliers for each attribute's contribution (e.g., Primary 1.0, Secondary 0.3).
+*   **Coefficient (Optional):** A multiplier applied to the final scaled value (default 1.0). Used for effects like "50% damage DoT ticks."
+
+**Damage Scaling vs Effect Scaling:**
+*   **Damage Scaling:** Used for numeric damage outputs (direct hits, DoT ticks, zone tick damage). Makes offensive stats (STR, INT, DEX) important for dealing damage.
+*   **Effect Scaling:** Used for non-damage numeric outputs and potency checks (healing, barriers, buff magnitude, status application power). Makes support stats (WIL, CHA, INT) important for utility.
+
+> Both are attribute-driven and exist to ensure attributes remain consistently important across all ability types.
+
+### B. Default Inheritance Rule
+
+Numeric effects **inherit** scaling from the ability's Scaling Blocks by default:
+*   `DealDamage`, DoT ticks, and Zone tick damage inherit **Damage Scaling**.
+*   `Heal`, Barrier, Buff magnitude, and Status application power inherit **Effect Scaling**.
+
+**If an ability omits a required scaling block:**
+*   If the ability has damage effects but no Damage Scaling, each damage effect **must** define its own `scaling_weights`.
+*   If the ability has heal/status effects but no Effect Scaling, each such effect **must** define its own `scaling_weights`.
+*   An effect that needs scaling but lacks both ability defaults and per-effect overrides is **invalid** and should be flagged for correction.
+
+### C. Per-Effect Override Rule
+
+Any numeric effect **may override** the inherited scaling profile by specifying its own:
+*   `scaling_weights` (Dictionary of Attribute->Weight)
+*   `scaling_coefficient` (Float, default 1.0)
+
+**Override Examples:**
+*   A DoT tick effect scales at 0.5x coefficient of the ability's Damage Scaling.
+*   A barrier effect uses Effect Scaling but with a different secondary attribute than the ability default.
+*   A status application uses Effect Scaling but with shifted weight distribution.
+
+### D. WeaponStrike Scaling Rule (v1)
+
+`WeaponStrike` is a special effect type that does **NOT** use the ability's Damage Scaling by default.
+
+*   WeaponStrike uses the **weapon's own scaling profile** (defined in `WeaponFamilyDef` or `WeaponDef`).
+*   The ability's Damage Scaling is ignored for WeaponStrike unless the effect explicitly declares an override.
+*   WeaponStrike multipliers (e.g., "125% weapon damage") are applied **after** computing the weapon's scaled roll, before mitigation.
+
+> **Design Note:** Ability Damage Scaling is primarily for `DealDamage` effects. If an ability contains both WeaponStrike and DealDamage effects, only the DealDamage uses ability scaling by default.
+
+### E. Zone Snapshot Rule
+
+Persistent zones (Fire Patch, Poison Cloud) **snapshot** the caster's scaling attributes at cast time.
+*   Zone tick damage uses the snapshotted values, not the caster's current stats.
+*   This prevents mid-combat buff-stacking exploits and simplifies zone logic.
+
+### F. Status Potency Rule
+
+Status application uses:
+*   **StatusPower** (derived from the ability's Effect Scaling) vs the target's **StatusResist** (derived from WIL or specific resistance).
+
+Avoid wording that implies a specific attribute (like STR) is always used. The correct phrasing is:
+*   "Effect Scaling derived power vs target resist."
+*   NOT "Strength vs Resistance."
 
 ### G. Effects List
 Abilities execute a sequence of **Effects**. If one fails (e.g., missed hit), subsequent effects may be cancelled based on configuration.
 *   **Weapon Strike:** Roll weapon damage, apply weapon scaling, hit check.
-*   **Deal Damage:** Roll baseline damage range (L1 * Curve), apply Ability Scaling, hit check.
+*   **Deal Damage:** Roll baseline damage range (L1 * Curve), inherit Damage Scaling, hit check.
 *   **Heal:** Restore HP to target.
 *   **Apply Status:** Attempt to apply a condition.
     *   *Parameters:* Status ID, Duration (Min/Max Turns).
-    *   *Logic:* Uses "Strength (from Effect Scaling) vs Resistance (Target)" check.
+    *   *Logic:* Uses "StatusPower (from Effect Scaling) vs target's StatusResist" check.
 *   **Modify Stat:** Buff/Debuff a specific stat (Accuracy, Speed, etc.) for X turns.
 *   **Movement:** Displace the caster or target (Push/Pull, Dash).
 *   **Spawn Summon:** Create a unit at the target location.
@@ -159,3 +226,18 @@ To allow enemies to use abilities intelligently:
 *   **Effects:**
     1.  Movement (Fly/Dash to point).
 *   **Preview:** Shows ghost of character at destination.
+
+---
+
+## Scaling Consistency Checklist (v1)
+
+Use this checklist to validate ability definitions:
+
+- [ ] Every numeric effect has a `Base_L1` value or uses `WeaponStrike` (which references weapon base).
+- [ ] Every ability with damage effects includes `Damage Scaling` (unless each effect defines its own override).
+- [ ] Every ability with heals, barriers, buffs, or status application includes `Effect Scaling` (unless each effect defines its own override).
+- [ ] `WeaponStrike` effects use weapon scaling by default (ability `Damage Scaling` does NOT apply unless explicitly overridden).
+- [ ] Persistent zones specify whether they snapshot caster scaling at cast time.
+- [ ] Status application uses `StatusPower (from Effect Scaling) vs target's StatusResist` terminology.
+
+> **Flagging Rule:** Any ability that violates these rules should be flagged for correction during review.
