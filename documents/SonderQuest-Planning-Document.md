@@ -29,7 +29,7 @@ Every damage instance carries a **Category** and a **Type**.
 | Damage Category | Primary Damage Types | Secondary Tags (Status Effects) |
 | :--- | :--- | :--- |
 | **Physical** | Melee, Ranged, Bleed, Crush | N/A |
-| **Magical** | Fire, Ice, Shock, Poison, Arcane, Nature | Burning, Frozen, Shocked, Poisoned, Wet |
+| **Magical** | Fire, Ice, Shock, Poison, Arcane, Nature, Shadow | Burning, Frozen, Shocked, Poisoned, Wet, Blinded |
 | **True** | N/A | Ignores most mitigation |
 
 ### B. Defensive Hierarchy
@@ -84,7 +84,7 @@ We distinguish between **Attribute Modifiers** for interaction and **Utility Abi
     *   **Analysis (INT):** Decipher runes, operate devices.
 *   **Utility Abilities (Movement Phase):**
     *   **Dash / Teleport:** Position readjustment.
-    *   **World Interaction:** Smash Wall, Freeze Water (handled as Utility Abilities).
+    *   **World Interaction:** Charge (Wallbreaker), Freeze Water (handled as Utility Abilities).
 
 ---
 
@@ -103,11 +103,11 @@ Classes offer different **ClassGrowth** layers, talent trees, and unique explora
 
 | Class | Role Focus | Resources | Key Exploration Abilities | Ultimate | Passives |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Mage** | Nuker, Control, Utility | Mana | Arcane Sight, Telekinesis, Elemental Interaction | **Arcane Tempest** (Large AOE) | Bonus elemental effect chance. |
-| **Warrior** | Frontliner, Tank, Melee Damage | Stamina | Break Barriers, Lift Heavy Objects, Intimidate | **War Cry of the Fallen** (Party buff + Taunt) | Reduced damage from first hit each turn. |
-| **Druid** | Traversal, Nature, Healer | Mana/Stamina | Bird Form (Flight), Wolf Form (Gaps), Root Growth | **Avatar of the Wild** (Empowered form + Aura) | Passive regen outdoors. |
-| **Thief** | Exploration, Tactical Striker | Stamina | Lockpicking, Trap Disarm, Wall Climb, Shadow Step | **Perfect Silence** (Vanish + Massive backstab) | Increased loot quality and trap success. |
-| **Hero** | Adaptable Fighter, Leader | Stamina | Rally (Movement Buff), Light/Shadow Path | **Fatebreaker** (Single-target hit with alignment bonus) | Party-wide minor stat bonus. |
+| **Mage** | Nuker, Control, Utility | Mana | Arcane Sight, Teleport, Elemental Interaction | **Arcane Tempest** (Large AOE) | Bonus elemental effect chance. |
+| **Warrior** | Frontliner, Tank, Melee Damage | Stamina | Charge (Wallbreaker), Intimidate | **War Cry of the Fallen** (Party buff + Taunt) | Reduced damage from first hit each turn. |
+| **Druid** | Traversal, Nature, Healer | Mana/Stamina | Bird Form (Flight), Wolfkin Form (Gaps), Thorny Root | **Avatar of the Wild** (Empowered form + Aura) | Passive regen outdoors. |
+| **Thief** | Exploration, Tactical Striker | Stamina | Lockpicking, Trap Disarm, Wall Climb, Shadow Slide | **Perfect Silence** (Vanish + Massive backstab) | Increased loot quality and trap success. |
+| **Hero** | Adaptable Fighter, Leader | Stamina | Dash, Radiant Guard/Shadow Rend | **Fatebreaker** (Single-target hit with alignment bonus) | Party-wide minor stat bonus. |
 
 ---
 

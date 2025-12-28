@@ -181,6 +181,7 @@ When authoring `AbilityDef` resources in the sections below, every entry MUST sp
     1.  **Weapon Strike:** 100% weapon damage to the target
 *   **Damage Category and Type:**
     *   Determined by strike source (Physical/Magical, Melee/Ranged, Slash/Pierce/Bludgeon).
+*   **AI Hints:** Damage
 *   **Notes:**
     *   Default fallback action. On-hit statuses from weapons are ignored in v1.
 
@@ -189,10 +190,117 @@ Basic Attack always uses the unit’s current strike source. If a Main Weapon is
 
 ---
 
-## 3. Warrior Starter Abilities (v1)
+## 3. Class Utility Abilities (Mobility & Interaction)
 
-### 1. Pain Strike
-*   **ID:** `abilities/action/melee/pain_strike`
+### 1. Charge (Wallbreaker)
+*   **ID:** `abilities/utility/warrior/charge`
+*   **Category:** Utility Ability (Mobility + Interaction)
+*   **Context:** Exploration + Combat
+*   **Phase:** Movement Phase (Combat)
+*   **Tags:** Mobility, Interaction, Warrior, Wallbreaker
+*   **Learn Rules:**
+    *   **Default Learners (Starter):** Warrior
+    *   **Other Player Learners:** Not learnable in v1
+    *   **Enemy Use:** Not used by enemies in v1
+*   **Hit Check:** Auto-Hit (Movement/Interaction)
+*   **Targeting:** Directional (player aims a direction)
+*   **Range:** Dash forward 8.0m (v1)
+*   **Cooldown:** 2 turns (Combat) / 2s (Exploration)
+*   **Cost:** 6 Stamina
+*   **Effects:**
+    1.  **Reposition Self:** Rapidly move forward up to 8.0m, stopping early if blocked.
+    2.  **Interaction:** If movement collides with breakable object (Wall/Boulder), destroy it.
+*   **Notes:**
+    *   Primarily an exploration gate tool that doubles as combat reposition.
+    *   No enemy collision damage in v1.
+
+### 2. Teleport (Blink)
+*   **ID:** `abilities/utility/mage/teleport`
+*   **Category:** Utility Ability (Mobility)
+*   **Context:** Exploration + Combat
+*   **Phase:** Movement Phase (Combat)
+*   **Tags:** Mobility, Arcane, Mage
+*   **Learn Rules:**
+    *   **Default Learners (Starter):** Mage
+    *   **Other Player Learners:** Not learnable in v1
+    *   **Enemy Use:** Not used by enemies in v1
+*   **Hit Check:** Auto-Hit (Movement)
+*   **Targeting:** Directional (forward relative to facing)
+*   **Range:** Teleport forward 6.0m (v1)
+*   **Cooldown:** 2 turns (Combat) / 2s (Exploration)
+*   **Cost:** 6 Mana
+*   **Effects:**
+    1.  **Reposition Self:** Teleport forward up to 6.0m, snapping to nearest valid position if blocked.
+*   **Notes:**
+    *   Exploration gap-crossing tool.
+    *   No damage, no enemy targeting.
+
+### 3. Dash
+*   **ID:** `abilities/utility/hero/dash`
+*   **Category:** Utility Ability (Mobility)
+*   **Context:** Exploration + Combat
+*   **Phase:** Movement Phase (Combat)
+*   **Tags:** Mobility, Hero
+*   **Learn Rules:**
+    *   **Default Learners (Starter):** Hero
+    *   **Other Player Learners:** Not learnable in v1
+    *   **Enemy Use:** Not used by enemies in v1
+*   **Hit Check:** Auto-Hit (Movement)
+*   **Targeting:** Directional (aim any direction)
+*   **Range:** Dash 5.0m (v1)
+*   **Cooldown:** 1 turn (Combat) / 1s (Exploration)
+*   **Cost:** 5 Stamina
+*   **Effects:**
+    1.  **Reposition Self:** Quick dash up to 5.0m in aimed direction, stopping early if blocked.
+*   **Notes:**
+    *   Small, frequent reposition option.
+
+### 4. Bird Form (Hop-Fly)
+*   **ID:** `abilities/utility/druid/bird_form`
+*   **Category:** Utility Ability (Form + Vertical Mobility)
+*   **Context:** Exploration + Combat
+*   **Phase:** Movement Phase (Combat)
+*   **Tags:** Mobility, Form, Druid
+*   **Learn Rules:**
+    *   **Default Learners (Starter):** Druid
+    *   **Other Player Learners:** Not learnable in v1
+    *   **Enemy Use:** Not used by enemies in v1
+*   **Hit Check:** Auto-Hit (Movement/Form)
+*   **Targeting:** Self
+*   **Range:** Vertical lift up to 4.0m, with a small forward glide up to 2.0m (v1)
+*   **Cooldown:** 3 turns (Combat) / 3s (Exploration)
+*   **Cost:** 7 Mana
+*   **Effects:**
+    1.  **Reposition Self:** Transform briefly and gain controlled upward lift (jump) with minor glide.
+*   **Notes:**
+    *   Exploration traversal tool (verticality). Limited combat use.
+
+### 5. Shadow Slide
+*   **ID:** `abilities/utility/thief/shadow_slide`
+*   **Category:** Utility Ability (Mobility)
+*   **Context:** Exploration + Combat
+*   **Phase:** Movement Phase (Combat)
+*   **Tags:** Mobility, Shadow, Thief
+*   **Learn Rules:**
+    *   **Default Learners (Starter):** Thief
+    *   **Other Player Learners:** Not learnable in v1
+    *   **Enemy Use:** Not used by enemies in v1
+*   **Hit Check:** Auto-Hit (Movement)
+*   **Targeting:** Ground Point (within radius)
+*   **Range:** Choose destination point within 7.0m (v1), LOS not required (must be navigable).
+*   **Cooldown:** 2 turns (Combat) / 2s (Exploration)
+*   **Cost:** 6 Stamina
+*   **Effects:**
+    1.  **Reposition Self:** Slide through shadow to selected point.
+*   **Notes:**
+    *   Point targeting differentiates it from Dash/Teleport.
+
+---
+
+## 4. Warrior Starter Abilities (v1)
+
+### 6. Rage Strike
+*   **ID:** `abilities/action/melee/rage_strike`
 *   **Category:** Action Ability (Weapon-Based)
 *   **Context:** Combat Only
 *   **Phase:** Action Phase
@@ -213,11 +321,12 @@ Basic Attack always uses the unit’s current strike source. If a Main Weapon is
     1.  **Weapon Strike** (100% weapon damage)
     2.  **Weapon Strike** (60% weapon damage)
     3.  **Deal Damage (Self)** (Base_L1: 2–3, Type: True, cannot crit)
+*   **AI Hints:** Damage, Finisher
 *   **Notes:**
     *   The self-damage is a direct effect, not a status.
     *   Multi-hit exists to validate sequencing, hit rolls, and future on-hit hooks.
 
-### 2. Ground Stomp
+### 7. Ground Stomp
 *   **ID:** `abilities/action/melee/ground_stomp`
 *   **Category:** Action Ability (Technique)
 *   **Context:** Combat Only
@@ -238,10 +347,11 @@ Basic Attack always uses the unit’s current strike source. If a Main Weapon is
 *   **Effects:**
     1.  **Deal Damage** (Base_L1: 5–7, Type: Physical)
     2.  **Apply Status** (`statuses/conditions/grounded`, Min 1 Turn, Max 1 Turn)
+*   **AI Hints:** Control
 *   **Status Notes:**
     *   Grounded: cannot move, cannot jump (duration controls the lock)
 
-### 3. Taunting Shout
+### 8. Taunting Shout
 *   **ID:** `abilities/action/buff/taunting_shout`
 *   **Category:** Action Ability (Technique)
 *   **Context:** Combat Only
@@ -262,15 +372,15 @@ Basic Attack always uses the unit’s current strike source. If a Main Weapon is
     *   **Effect Scaling:** CHA (Primary), WIL (Secondary minor)
 *   **Effects:**
     1.  **Apply Status** (`statuses/conditions/taunted`, Min 2 Turns, Max 2 Turns)
-*   **AI Usage Hint:** Control, Prefer Highest Threat Targeting
+*   **AI Hints:** Control
 *   **Status Notes:**
     *   Taunted: AI prioritizes the shout source when possible.
 
 ---
 
-## 4. Mage Starter Abilities (v1)
+## 5. Mage Starter Abilities (v1)
 
-### 4. Firebolt
+### 9. Firebolt
 *   **ID:** `abilities/action/magic/firebolt`
 *   **Category:** Action Ability (Spell)
 *   **Context:** Combat Only
@@ -291,12 +401,12 @@ Basic Attack always uses the unit’s current strike source. If a Main Weapon is
     1.  **Deal Damage** (Base_L1: 6–8, Type: Fire)
     2.  **Apply Status** (`statuses/conditions/burning`, Min 3 Turns, Max 3 Turns)
     3.  **Burning Tick (per instance):** Base_L1: 4 per turn (Fire), scales with Damage Scaling
-*   **AI Usage Hint:** Damage, Opener
+*   **AI Hints:** Damage
 *   **Status Interaction Reminders:**
     *   Burning is instance-stacking.
     *   If Wet is present, Wet is removed only if Burning is applied (this ability does apply Burning).
 
-### 5. Drench
+### 10. Drench
 *   **ID:** `abilities/action/magic/drench`
 *   **Category:** Action Ability (Spell)
 *   **Context:** Combat Only
@@ -316,11 +426,12 @@ Basic Attack always uses the unit’s current strike source. If a Main Weapon is
 *   **Effects:**
     1.  **Deal Damage** (Base_L1: 5–7, Type: Water)
     2.  **Apply Status** (`statuses/conditions/wet`, Min 2 Turns, Max 2 Turns)
+*   **AI Hints:** Opener, Debuff
 *   **Status Interaction Reminders (from your chart):**
     *   If the target already has Chill, Wet does not apply and no Chill is added.
     *   Wet is primarily a setup state for Ice conversion and Lightning Jolt.
 
-### 6. Magic Shield
+### 11. Magic Shield
 *   **ID:** `abilities/action/magic/magic_shield`
 *   **Category:** Action Ability (Spell)
 *   **Context:** Combat Only
@@ -341,13 +452,13 @@ Basic Attack always uses the unit’s current strike source. If a Main Weapon is
     1.  **Apply Status** (`statuses/buffs/magic_barrier`, Min 2 Turns, Max 2 Turns)
 *   **Barrier Value:** Base_L1: 10–14 shield, scales with Effect Scaling
 *   **Barrier Filter:** absorbs Magical category damage only (does not absorb Physical)
-*   **AI Usage Hint:** Buff, Prefer Lowest HP Ally
+*   **AI Hints:** Buff
 
 ---
 
-## 5. Thief Starter Abilities (v1)
+## 6. Thief Starter Abilities (v1)
 
-### 1. Backstab
+### 12. Backstab
 *   **ID:** `abilities/action/melee/backstab`
 *   **Category:** Action Ability (Technique)
 *   **Context:** Combat Only
@@ -371,11 +482,12 @@ Basic Attack always uses the unit’s current strike source. If a Main Weapon is
     1.  **Reposition Self:** Teleport behind target (or nearest adjacent)
     2.  **Deal Damage:** Base_L1 9–12, Type: Physical (Melee)
     3.  **Conditional Bonus Damage:** if successfully positioned behind target, deal additional Base_L1 4–6, Type: Physical
+*   **AI Hints:** Damage, Finisher
 *   **Notes:**
     *   This is the core “positioning payoff” test case.
     *   Bonus damage is conditional, not a separate status.
 
-### 2. Shadow Throw
+### 13. Shadow Throw
 *   **ID:** `abilities/action/ranged/shadow_throw`
 *   **Category:** Action Ability (Technique)
 *   **Context:** Combat Only
@@ -397,11 +509,12 @@ Basic Attack always uses the unit’s current strike source. If a Main Weapon is
 *   **Effects:**
     1.  **Weapon Throw:** 90% weapon damage (converted to Ranged)
     2.  **Apply Status:** `statuses/conditions/blind`, Duration 2 turns
+*   **AI Hints:** Debuff
 *   **Notes:**
     *   Allows Thief to function at mid-range using Daggers.
     *   Blind is non-stacking, refresh duration on reapply.
 
-### 3. Toxic Blade
+### 14. Toxic Blade
 *   **ID:** `abilities/action/melee/toxic_blade`
 *   **Category:** Action Ability (Technique)
 *   **Context:** Combat Only
@@ -425,15 +538,16 @@ Basic Attack always uses the unit’s current strike source. If a Main Weapon is
     2.  **Deal Damage:** Base_L1 2–3, Type: Poison (instant)
     3.  **Apply Status:** `statuses/conditions/poisoned`, Duration 3 turns
     4.  **Poison Tick (per instance):** Base_L1 4 per turn, Type: Poison, scales with Damage Scaling
+*   **AI Hints:** Damage
 *   **Notes:**
     *   Initial hit is intentionally lower than Backstab.
     *   Total damage is higher over time if the target survives.
 
 ---
 
-## 6. Hero Starter Abilities (v1)
+## 7. Hero Starter Abilities (v1)
 
-### 4. Cleave
+### 15. Cleave
 *   **ID:** `abilities/action/melee/cleave`
 *   **Category:** Action Ability (Weapon-Based)
 *   **Context:** Combat Only
@@ -455,11 +569,12 @@ Basic Attack always uses the unit’s current strike source. If a Main Weapon is
     *   **Effect Scaling:** STR (Primary)
 *   **Effects:**
     1.  **Weapon Strike:** 85% weapon damage to all enemies in cone
+*   **AI Hints:** Damage
 *   **Notes:**
     *   Target is used to set facing and cone direction.
     *   This is your primary “weapon AoE” validation ability.
 
-### 5. Radiant Guard
+### 16. Radiant Guard
 *   **ID:** `abilities/action/support/radiant_guard`
 *   **Category:** Action Ability (Spell)
 *   **Context:** Combat Only
@@ -481,10 +596,11 @@ Basic Attack always uses the unit’s current strike source. If a Main Weapon is
     1.  **Apply Status:** `statuses/buffs/physical_barrier`, Duration 3 turns
     2.  **Barrier Value:** Base_L1 8–12, absorbs Physical category damage only
     3.  **Heal:** Base_L1 4–6 (instant), Type: Healing
+*   **AI Hints:** Buff, Heal
 *   **Notes:**
     *   This is intentionally smaller than Magic Shield and only blocks physical.
 
-### 6. Shadow Rend
+### 17. Shadow Rend
 *   **ID:** `abilities/action/melee/shadow_rend`
 *   **Category:** Action Ability (Weapon-Based)
 *   **Context:** Combat Only
@@ -507,15 +623,16 @@ Basic Attack always uses the unit’s current strike source. If a Main Weapon is
     1.  **Weapon Strike:** 100% weapon damage
     2.  **Deal Damage:** Base_L1 4–6, Type: True (Uses Ability Damage Scaling: WIL)
     3.  **Bonus True Damage:** Base_L1 6–8 if target is below 50% HP (conditional execution)
+*   **AI Hints:** Finisher
 *   **Notes:**
     *   Hybrid scaling: Weapon Strike uses Weapon Stats (STR/DEX), True Damage uses Ability Stats (WIL).
     *   Supports the "High Risk / Magic Knight" fantasy of the Dreadbound.
 
 ---
 
-## 7. Beast Starter Abilities (Shared Library)
+## 8. Beast Starter Abilities (Shared Library)
 
-### 7. Vicious Bite
+### 18. Vicious Bite
 *   **ID:** `abilities/action/beast/vicious_bite`
 *   **Category:** Action Ability (Beast Strike)
 *   **Context:** Combat Only
@@ -538,10 +655,11 @@ Basic Attack always uses the unit’s current strike source. If a Main Weapon is
     1.  **Deal Damage:** Base_L1 5–7, Type: Physical (Melee)
     2.  **Apply Status:** `statuses/conditions/bleeding`, Duration 3 turns
     3.  **Bleeding Tick:** 3 Physical damage per turn (non-stacking), scales with Damage Scaling
+*   **AI Hints:** Damage
 *   **Notes:**
     *   Shared "beast attack + condition" building block.
 
-### 8. Deep Slash
+### 19. Deep Slash
 *   **ID:** `abilities/action/beast/deep_slash`
 *   **Category:** Action Ability (Beast Strike)
 *   **Context:** Combat Only
@@ -563,10 +681,11 @@ Basic Attack always uses the unit’s current strike source. If a Main Weapon is
 *   **Effects:**
     1.  **Deal Damage:** Base_L1 4–6, Type: Physical (Melee)
     2.  **Conditional Bonus Damage:** If target has `statuses/conditions/bleeding`, deal additional Base_L1 5–7, Type: Physical
+*   **AI Hints:** Damage
 *   **Notes:**
     *   Combo payoff for Vicious Bite.
 
-### 9. Pack Howl
+### 20. Pack Howl
 *   **ID:** `abilities/action/beast/pack_howl`
 *   **Category:** Action Ability (Beast Support)
 *   **Context:** Combat Only
@@ -588,14 +707,15 @@ Basic Attack always uses the unit’s current strike source. If a Main Weapon is
     *   **Effect Scaling:** WIL (Primary), CHA (Secondary minor)
 *   **Effects:**
     1.  **Apply Status:** `statuses/buffs/howl`, Duration 2 turns, to all allies in radius
+*   **AI Hints:** Buff
 *   **Notes:**
     *   Team aura test usage.
 
 ---
 
-## 8. Druid Form Abilities
+## 9. Druid Form Abilities
 
-### 10. Wolfkin Form
+### 21. Wolfkin Form
 *   **ID:** `abilities/utility/forms/wolfkin_form`
 *   **Category:** Utility Ability (Form + Mobility)
 *   **Context:** Combat Only
@@ -621,7 +741,7 @@ Basic Attack always uses the unit’s current strike source. If a Main Weapon is
 *   **Notes:**
     *   Casting a non-Beast spell ends form immediately.
 
-### 11. Thorny Root
+### 22. Thorny Root
 *   **ID:** `abilities/action/magic/thorny_root`
 *   **Category:** Action Ability (Nature Spell)
 *   **Context:** Combat Only
@@ -645,11 +765,12 @@ Basic Attack always uses the unit’s current strike source. If a Main Weapon is
         *   *Tick:* Nature Damage at Start of Turn.
         *   *Stacking:* Non-stacking, refresh duration.
     2.  **Rooted Tick Value:** Base_L1: 5 damage per turn, Type: Nature (Scales with Damage Scaling).
+*   **AI Hints:** Control
 *   **Notes:**
     *   Primary "single-target lock + attrition" tool.
     *   No immediate damage to keep it clean as a Control/DoT spell.
 
-### 12. Healing Wind
+### 23. Healing Wind
 *   **ID:** `abilities/action/support/healing_wind`
 *   **Category:** Action Ability (Nature Support)
 *   **Context:** Combat Only
@@ -673,14 +794,15 @@ Basic Attack always uses the unit’s current strike source. If a Main Weapon is
         *   *Tick:* Heal at Start of Turn.
         *   *Stacking:* Instance-Stacking (Global rule override if needed, but per doc usually non-stacking unless specified, using doc rule: Instance Stacking for Regen per Section 1.A.2).
     3.  **Regeneration Tick Value:** Base_L1: 7 per turn (Scales with Effect Scaling).
+*   **AI Hints:** Heal
 *   **Notes:**
     *   HoT total intentionally exceeds upfront heal.
 
 ---
 
-## 9. Starter Enemy Abilities (v1)
+## 10. Starter Enemy Abilities (v1)
 
-### 13. Bite
+### 24. Bite
 *   **ID:** `abilities/action/melee/bite`
 *   **Category:** Action Ability (Natural Strike)
 *   **Context:** Combat Only
@@ -701,10 +823,11 @@ Basic Attack always uses the unit’s current strike source. If a Main Weapon is
     *   **Effect Scaling:** None
 *   **Effects:**
     1.  **Deal Damage:** Base_L1 4–6, Type: Physical (Melee)
+*   **AI Hints:** Damage
 *   **Notes:**
     *   Simple beast strike for Cave Bat and other animal enemies.
 
-### 14. Life Leech
+### 25. Life Leech
 *   **ID:** `abilities/action/magic/life_leech`
 *   **Category:** Action Ability (Spell)
 *   **Context:** Combat Only
@@ -725,11 +848,12 @@ Basic Attack always uses the unit’s current strike source. If a Main Weapon is
 *   **Effects:**
     1.  **Deal Damage:** Base_L1 6–9, Type: Shadow
     2.  **Heal Self:** Heal for 70% of damage dealt (rounded down)
+*   **AI Hints:** Damage, Heal
 *   **Notes:**
     *   Vampire Bat’s "drain-tank" identity button.
     *   Healing is based on actual damage dealt.
 
-### 15. Dirty Stab
+### 26. Dirty Stab
 *   **ID:** `abilities/action/melee/dirty_stab`
 *   **Category:** Action Ability (Technique)
 *   **Context:** Combat Only
@@ -752,10 +876,11 @@ Basic Attack always uses the unit’s current strike source. If a Main Weapon is
     1.  **Deal Damage:** Base_L1 3–5, Type: Physical (Melee)
     2.  **Apply Status:** `statuses/conditions/poisoned`, Duration 2 turns
     3.  **Poison Tick:** 3 Poison damage/turn (instance-stacking), scales with Damage Scaling
+*   **AI Hints:** Damage, Debuff
 *   **Notes:**
     *   Makes the scout feel threatening without complex movement.
 
-### 16. Minor Heal
+### 27. Minor Heal
 *   **ID:** `abilities/action/support/minor_heal`
 *   **Category:** Action Ability (Spell)
 *   **Context:** Combat Only
@@ -775,10 +900,11 @@ Basic Attack always uses the unit’s current strike source. If a Main Weapon is
     *   **Effect Scaling:** WIL (Primary), INT (Secondary minor)
 *   **Effects:**
     1.  **Heal (Instant):** Base_L1 8–12
+*   **AI Hints:** Heal
 *   **Notes:**
     *   Clean support tool for testing ally targeting and healer AI.
 
-### 17. Fire Patch
+### 28. Fire Patch
 *   **ID:** `abilities/action/zone/fire_patch`
 *   **Category:** Action Ability (Zone Spell)
 *   **Context:** Combat Only
@@ -801,11 +927,12 @@ Basic Attack always uses the unit’s current strike source. If a Main Weapon is
 *   **Effects:**
     1.  **Create Persistent Zone:** Fire Patch, Duration 3 turns
     2.  **Zone Tick (Start of Turn):** units inside take Base_L1 4–6 Fire damage/turn (scales with Damage Scaling)
+*   **AI Hints:** Control
 *   **Notes:**
     *   Core "persistent zone test" ability.
     *   No automatic Burning unless added later.
 
-### 18. Heavy Swing
+### 29. Heavy Swing
 *   **ID:** `abilities/action/melee/heavy_swing`
 *   **Category:** Action Ability (Weapon-Based)
 *   **Context:** Combat Only
@@ -826,5 +953,7 @@ Basic Attack always uses the unit’s current strike source. If a Main Weapon is
     *   **Effect Scaling:** None
 *   **Effects:**
     1.  **Weapon Strike:** 125% weapon damage
+*   **AI Hints:** Damage
 *   **Notes:**
     *   Simple "hard hit" button for tanky melee enemies.
+

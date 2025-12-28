@@ -71,7 +71,7 @@ The adaptable protagonist archetype.
 The durable frontliner.
 *   **Berserker:** Blood-fueled destroyer trading safety for power.
     *   *Themes:* Self-damage, burst melee, stamina-heavy.
-    *   *Example:* **Pain Strike** (Double hit, self-damage).
+    *   *Example:* **Rage Strike** (Double hit, self-damage).
 *   **Warden:** Armored enforcer controlling space.
     *   *Themes:* Damage reduction, knockdowns, grounding.
     *   *Example:* **Ground Stomp** (AoE damage + Grounded status).

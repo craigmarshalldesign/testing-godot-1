@@ -40,22 +40,24 @@ All gameplay data resides in `res://data/`. The system uses **String IDs** match
 | `res://data/config/` | `config/` | `ProgressionDef` |
 
 **ID Examples:**
-*   `abilities/action/magic/fireball`
+*   `abilities/action/magic/firebolt`
 *   `abilities/action/melee/cleave`
-*   `abilities/utility/mobility/dash_basic`
-*   `abilities/utility/interaction/smash_wall`
-*   `weapons/swords/bronze_longsword`
-*   `weapons/bows/simple_shortbow`
+*   `abilities/utility/warrior/charge`
+*   `abilities/utility/mage/teleport`
+*   `abilities/action/melee/shadow_rend`
+*   `abilities/action/beast/vicious_bite`
+*   `weapons/families/sword_1h`
+*   `weapons/sword_1h/sword_bronze`
+*   `weapons/natural/fangs/fangs`
 *   `layers/species/beast`
-*   `layers/species/beast/bat`
 *   `layers/classes/mage`
 *   `units/enemies/cave_bat`
 *   `units/enemies/goblin_scout`
-*   `statuses/conditions/burn`
-*   `statuses/buffs/rage_buff`
+*   `statuses/conditions/burning`
+*   `statuses/conditions/taunted`
 *   `ai/behaviors/aggressive_melee`
 
-**Constraint:** Do not use class names in ability paths. Use functional categories (`magic`, `melee`, `mobility`).
+**Constraint:** Action abilities should use functional categories (`magic`, `melee`, `support`). Utility abilities generally use class folders (`utility/mage`, `utility/warrior`) or functional folders (`utility/mobility`) depending on implementation preference, but Starter List currently uses functional subfolders for Action and Class folders for Utility.
 
 ---
 
@@ -128,7 +130,7 @@ These definitions map directly to `Resource` scripts in Godot.
     *   `damage_min`: Int
     *   `damage_max`: Int
     *   `damage_category`: Enum (Physical, Magical)
-    *   `damage_type`: Enum (Melee, Ranged, etc.)
+    *   `damage_type`: Enum (Melee, Ranged, Crush, etc.)
     *   `range_override`: Float (Optional)
     *   `initiative_mod`: Int
     *   `accuracy_mod`: Float
@@ -260,7 +262,6 @@ The `StatResolver` performs these steps in order:
     *   `DerivedMana = ScaledBaselines.Mana + (RawAttributes.INT * MANA_PER_INT)`.
     *   `DerivedStamina = ScaledBaselines.Stamina + (RawAttributes.VIT * STAM_PER_VIT)`.
     *   `DerivedManaRegen = ManaRegenBase + (RawAttributes.WIL * MANA_REGEN_PER_WIL)`.
-    *   `DerivedStaminaRegen = StaminaRegenBase + (RawAttributes.VIT * STAMINA_REGEN_PER_VIT)`.
     *   `DerivedStaminaRegen = StaminaRegenBase + (RawAttributes.VIT * STAMINA_REGEN_PER_VIT)`.
     *   **Substats:** Derived stats like Accuracy/Crit are calculated here.
     *   **Defense:** Base mitigation from Layers/Attributes is summed with **Armor** (Head/Torso/Legs) and **Shield** stats.
